@@ -61,7 +61,7 @@ package:
     #- docker build -t "$CI_REGISTRY_IMAGE:latest" .
     #- docker push "$CI_REGISTRY_IMAGE:latest"
     #- docker logout
-    - docker build -t soona:latest
+    - docker build -t soona:latest .
   only:
     - master
 
