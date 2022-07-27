@@ -37,7 +37,6 @@ test:
     - master
   # 일단 생략
 
-
 package:
   stage: package
   image:
@@ -62,29 +61,7 @@ package:
     #- docker push "$CI_REGISTRY_IMAGE:latest"
     #- docker logout
     - docker build -t soona:latest .
-  artifacts:
-    paths:
-      - /var/lib/docker/overlay2
-    expire_in: 1 day
-  only:
-    - master
-
-publish:
-  # upload to ecr
-  stage: publish
-  image:
-    name: docker:stable
-  services:
-    - name: docker:dind
-      alias: dockerdaemon
-  variables:
-    # Tell docker CLI how to talk to Docker daemon.
-    DOCKER_HOST: tcp://dockerdaemon:2375/
-    # Use the overlayfs driver for improved performance.
-    DOCKER_DRIVER: overlay2
-    # Disable TLS since we're running inside local network.
-    DOCKER_TLS_CERTDIR: ""
-  before_script:
+    # now upload to ecr
     - ntpd -q -p time.nist.gov
     - apk add --no-cache curl jq python3 py-pip
     - pip install awscli
@@ -92,8 +69,8 @@ publish:
     - aws --version
     - docker info
     - docker --version
-  script:
     - docker tag soona:latest $DOCKER_REGISTRY/$APP_NAME:latest
     - docker push $DOCKER_REGISTRY/$APP_NAME:latest
   only:
     - master
+
