@@ -1,5 +1,8 @@
 image: docker:20.10
 
+service:
+  - docker:dind
+
 variables:
   DOCKER_REGISTRY: 986249049395.dkr.ecr.ap-northeast-2.amazonaws.com
   APP_NAME: soona
@@ -56,6 +59,10 @@ publish:
 
 deploy:
   stage: publish
+  variables:
+    TASK_DEFINITION_NAME: soona-backend-task
+    CLUSTER_NAME: soona-cluster
+    SERVICE_NAME: soona-backend-task-service
   before_script:
     - ntpd -q -p time.nist.gov
     - apk add --no-cache curl jq python py-pip
@@ -65,6 +72,12 @@ deploy:
     - docker info
     - docker --version
   script:
-    - aws ecs register-task-definition --family soona-backend-task --requires-compatibilities FARGATE --cpu 256 --cli-input-json file://뭐시기.json --region $AWS_REGION
-    - aws ecs update-service --cluster soona-cluster --service soona-backend-task-service --task-definition soona-backend-task --region $AWS_REGION
-
+    - echo $DOCKER_REGISTRY/$APP_NAME:latest
+    - TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition "$TASK_DEFINITION_NAME" --region "${AWS_DEFAULT_REGION}")
+    - NEW_CONTAINER_DEFINTIION=$(echo $TASK_DEFINITION | jq --arg IMAGE "$REPOSITORY_URL:$IMAGE_TAG" '.taskDefinition.containerDefinitions[0].image = $IMAGE | .taskDefinition.containerDefinitions[0]')
+    - echo "Registering new container definition..."
+    - aws ecs register-task-definition --family "${TASK_DEFINITION_NAME}" --requires-compatibilities FARGATE --cpu 256 --region $AWS_REGION
+    - echo "Updating the service..."
+    - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TEST_DEFINITION_NAME --region $AWS_REGION
+  only:
+    master
