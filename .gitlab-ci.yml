@@ -3,7 +3,7 @@ image: docker:20.10
 variables:
   DOCKER_REGISTRY: 986249049395.dkr.ecr.ap-northeast-2.amazonaws.com
   APP_NAME: soona
-  DOCKER_HOST: tcp://docker:2375
+  DOCKER_HOST: tcp://thedockerhost:2375
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
@@ -18,7 +18,8 @@ build:
   # gradle 버전 확인 
   stage: build
   services:
-    - docker:dind
+    - name: docker:dind
+      alias: thedockerhost
   script:
     - echo "gradle build"
     - chmod +x gradlew
