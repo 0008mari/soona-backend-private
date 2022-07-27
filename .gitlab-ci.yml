@@ -8,7 +8,6 @@ stages:
   - build
   - test
   - package
-  - publish
   - deploy
 
 build:
@@ -74,3 +73,17 @@ package:
   only:
     - master
 
+deploy:
+  stage: deploy
+  variables:
+    TASK_DEF_NAME: soona-backend-task
+    CLUSTER_NAME: soona-cluster
+    SERVICE_NAME: soona-backend-task-service
+  script:
+    - echo "deploy start"
+    - ntpd -q -p time.nist.gov
+    - apk add --no-cache curl jq python3 py-pip
+    - pip install awscli
+    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    # - aws ecs register-task-definition --family $TASK_DEF_NAME --requires-compatibilities FARGATE --cpu 256 --memory 512 --region $AWS_REGION
+    - aws ecs update-service --cluster $CLUSTER_NAME --service soona-backend-task-service --task-definition soona-backend-task --region $AWS_REGION --force-new-deployment
