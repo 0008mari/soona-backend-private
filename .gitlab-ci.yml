@@ -7,17 +7,17 @@ variables:
 stages:
   - build
   - test
+  - package
   - publish
   - deploy
 
 build:
   image: gradle:alpine
-  # gradle 버전 확인 
+  # gradle 버전 확인 필요
   stage: build
   script:
     - echo "gradle build"
     - chmod +x gradlew
-    - echo "gradle build start---"
     - ./gradlew clean
     - ./gradlew build
   artifacts:
@@ -27,8 +27,19 @@ build:
   only:
     - master
 
-dind-build:
-  stage: build
+test:
+  # image jdk
+  stage: test
+  script:
+    - echo "pass"
+    # - ./gradlew test
+  only:
+    - master
+  # 일단 생략
+
+
+package:
+  stage: package
   image:
     name: docker:stable
   services:
@@ -47,18 +58,11 @@ dind-build:
     # other Docker registry though by changing the login and
     # image name.
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    - docker build -t "$CI_REGISTRY_IMAGE:dind" .
-    - docker push "$CI_REGISTRY_IMAGE:dind"
-    - docker images
-
-
-test:
-  stage: test
-  script:
-    - echo "pass"
+    - docker build -t "$CI_REGISTRY_IMAGE:latest" .
+    - docker push "$CI_REGISTRY_IMAGE:latest"
+    - docker logout
   only:
     - master
-  # 일단 생략
 
 publish:
   # upload to ecr
