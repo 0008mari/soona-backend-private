@@ -72,8 +72,8 @@ package:
 publish:
   # upload to ecr
   stage: publish
-  image: 
-    - name: docker:stable
+  image:
+    name: docker:stable
   services:
     - name: docker:dind
       alias: dockerdaemon
