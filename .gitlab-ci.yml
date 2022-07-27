@@ -89,8 +89,6 @@ deploy:
     - apk add --no-cache curl jq python3 py-pip
     - pip install awscli
     - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
-    - aws ecs register-task-definition --requires-compatibilities FARGATE --cpu 256 --memory 512 --region $AWS_REGION
-    - aws ecs describe-task-definition --task-definition $TASK_DEF_NAME:latest > /ef.json
     - filePath="/bin/LEAP/$TASK_DEF_NAME.json"
     - export task_version=$(aws ecs register-task-definition --cli-input-json file://$filePath --region $region | jq --raw-output '.taskDefinition.revision')
     - aws ecs register-task-definition --cli-input-json $filePath.sjon --region $AWS_REGION
