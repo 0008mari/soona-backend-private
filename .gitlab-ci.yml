@@ -18,6 +18,7 @@ gradle_build:
   stage: build
   script:
     - echo "gradle build"
+    - chmod +x gradlew
     - ./gradlew clean
     - ./gradlew build
   artifacts:
