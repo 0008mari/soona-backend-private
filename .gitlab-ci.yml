@@ -72,6 +72,18 @@ package:
 publish:
   # upload to ecr
   stage: publish
+  image: 
+    - name: docker:stable
+  services:
+    - name: docker:dind
+      alias: dockerdaemon
+  variables:
+    # Tell docker CLI how to talk to Docker daemon.
+    DOCKER_HOST: tcp://dockerdaemon:2375/
+    # Use the overlayfs driver for improved performance.
+    DOCKER_DRIVER: overlay2
+    # Disable TLS since we're running inside local network.
+    DOCKER_TLS_CERTDIR: ""
   before_script:
     - ntpd -q -p time.nist.gov
     - apk add --no-cache curl jq python3 py-pip
