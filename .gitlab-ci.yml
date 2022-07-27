@@ -74,7 +74,7 @@ publish:
   stage: publish
   before_script:
     - ntpd -q -p time.nist.gov
-    - apk add --no-cache curl jq python py-pip
+    - apk add --no-cache curl jq python3 py-pip
     - pip install awscli
     - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     - aws --version
