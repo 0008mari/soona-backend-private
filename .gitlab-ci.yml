@@ -62,6 +62,10 @@ package:
     #- docker push "$CI_REGISTRY_IMAGE:latest"
     #- docker logout
     - docker build -t soona:latest .
+  artifacts:
+    paths:
+      - /var/lib/docker/overlay2
+    expire_in: 1 day
   only:
     - master
 
