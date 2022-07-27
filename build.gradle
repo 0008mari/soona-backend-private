@@ -4,6 +4,11 @@ plugins {
 	id 'java'
 }
 
+jar {
+	enabled = false
+	// 빌드 시 plain ver.는 제외
+}
+
 group = 'cherrytea'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
