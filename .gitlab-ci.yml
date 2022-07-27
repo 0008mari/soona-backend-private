@@ -1,0 +1,70 @@
+image: docker:20.10
+
+variables:
+  DOCKER_REGISTRY: 986249049395.dkr.ecr.ap-northeast-2.amazonaws.com
+  APP_NAME: soona
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - build
+  - test
+  - publish
+  - deploy
+
+build:
+  image: gradle:alpine
+  # gradle 버전 확인 
+  stage: build
+  only: master
+  script:
+    - ./gradlew clean
+    - ./gradlew build
+    - echo "build start"
+    - docker build -t soona:latest .
+  artifacts:
+    paths:
+      - build/libs/*.jar
+      expire_in: 1 day
+  only:
+    - master
+  
+test:
+  stage: test
+  script:
+    - echo "pass"
+  only:
+    - master
+  # 일단 생략
+
+publish:
+  # upload to ecr
+  stage: publish
+  before_script:
+    - ntpd -q -p time.nist.gov
+    - apk add --no-cache curl jq python py-pip
+    - pip install awscli
+    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - aws --version
+    - docker info
+    - docker --version
+  script:
+    - docker tag soona:latest $DOCKER_REGISTRY/$APP_NAME:latest
+    - docker push $DOCKER_REGISTRY/$APP_NAME:latest
+  only:
+    - master
+
+deploy:
+  stage: publish
+  before_script:
+    - ntpd -q -p time.nist.gov
+    - apk add --no-cache curl jq python py-pip
+    - pip install awscli
+    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - aws --version
+    - docker info
+    - docker --version
+  script:
+    - aws ecs register-task-definition --family soona-backend-task --requires-compatibilities FARGATE --cpu 256 --cli-input-json file://뭐시기.json --region $AWS_REGION
+    - aws ecs update-service --cluster soona-cluster --service soona-backend-task-service --task-definition soona-backend-task --region $AWS_REGION
+
