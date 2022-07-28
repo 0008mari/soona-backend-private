@@ -90,6 +90,6 @@ deploy:
     - pip install awscli
     - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     - filePath="/bin/LEAP/$TASK_DEF_NAME.json"
-    - export task_version=$(aws ecs register-task-definition --cli-input-json file://$filePath --region $region | jq --raw-output '.taskDefinition.revision')
-    - aws ecs register-task-definition --cli-input-json $filePath.sjon --region $AWS_REGION
-    - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEF_NAME --region $AWS_REGION
+    - export task_version=$(aws ecs describe-task-definition --cli-input-json file://$filePath --region $region | jq --raw-output '.taskDefinition.revision') --debug
+    - aws ecs register-task-definition --cli-input-json $filePath.sjon --region $AWS_REGION --debug
+    - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEF_NAME --region $AWS_REGION 
