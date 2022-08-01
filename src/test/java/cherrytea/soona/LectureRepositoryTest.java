@@ -22,7 +22,7 @@ public class LectureRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback(value = false)
+    @Rollback(value = true)
     public void testLecture() throws Exception {
         //given
         Lecture lecture = new Lecture();
