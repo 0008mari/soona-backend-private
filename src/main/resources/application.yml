@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://soona-db.cpkgr8va0kzp.ap-northeast-2.rds.amazonaws.com:3306/soonadb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: backend
+    password: 1234
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  logging:
+    level:
+      org.hibernate.SQL: debug
+      org.hibernate.type: trace
