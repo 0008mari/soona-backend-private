@@ -10,16 +10,24 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
-@RestController
+@RestController // 리턴값에 자동으로 @ResponseBody 붙어서 HTTP json으로 나감.
 @RequiredArgsConstructor
 public class LectureController {
 
     private final LectureService lectureService;
 
+    @PostMapping("/lecture")
+    public UUID addLecture(@RequestBody Lecture lecture){
+        System.out.println(lecture);
+        return lectureService.addLecture(lecture);
+    }
 
 
     @GetMapping(value = "/lectures")
@@ -28,9 +36,7 @@ public class LectureController {
         //HttpHeaders headers = new HttpHeaders();
         //headers.set("headername", "headervalue");
 
-        List<Lecture> lectures = lectureService.findLectures();
-
-        return lectures;
+        return lectureService.findLectures();
         //return new ResponseEntity<>(lectures, headers, HttpStatus.valueOf(200));
     }
 }

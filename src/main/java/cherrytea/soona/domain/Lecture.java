@@ -39,22 +39,20 @@ public class Lecture {
     private String type;
 
     //lec_CONT 수업 내용
-    @Lob
-    @Column(name = "LEC_CONT")
-    private Clob content;
+    @Column(name = "LEC_CONT", columnDefinition = "TEXT")
+    private String content;
 
     //lecEval 수업 평가 - ex: "10점"
     @Column(name = "LEC_EVAL")
     private String evaluation;
 
     //hw
-    @Lob
-    @Column(name = "hw")
-    private Clob homework;
+    @Column(name = "hw", columnDefinition = "TEXT")
+    private String homework;
 
     //lecMemo
-    @Lob
-    private Clob lecMemo;
+    @Column(columnDefinition = "TEXT")
+    private String lecMemo;
 
 
 

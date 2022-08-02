@@ -21,6 +21,11 @@ public class LectureRepository {
         return lecture.getId();
     }
 
+//    public UUID save(Lecture lecture) {
+//        em.persist(lecture);
+//        return lecture.getId();
+//    }
+
     public Lecture findOne(UUID id) {
         return em.find(Lecture.class, id);
     }

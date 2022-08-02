@@ -2,6 +2,7 @@ package cherrytea.soona;
 
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.repository.LectureRepository;
+import cherrytea.soona.service.LectureService;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,31 +12,31 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class LectureRepositoryTest {
 
-    @Autowired
-    LectureRepository lectureRepository;
+    @Autowired LectureService lectureService;
+    @Autowired LectureRepository lectureRepository;
+    @Autowired EntityManager em;
 
     @Test
-    @Transactional
-    @Rollback(value = true)
-    public void testLecture() throws Exception {
+    public void addLecture() throws Exception {
         //given
         Lecture lecture = new Lecture();
-        lecture.setEvaluation("10점");
-
+        lecture.setEvaluation("999점");
 
         //when
-        UUID savedId = lectureRepository.save(lecture);
-        
-        //then
-        Lecture findLecture = lectureRepository.findOne(savedId);
-        Assertions.assertThat(findLecture.getId()).isEqualTo(lecture.getId());
-        Assertions.assertThat(findLecture.getEvaluation()).isEqualTo(lecture.getEvaluation());
+        UUID savedId = lectureService.addLecture(lecture);
 
-    }
+        //then
+        Assertions.assertThat(lecture).isEqualTo(lectureRepository.findOne(savedId));
+     }
+
+
+
 }
