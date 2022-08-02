@@ -27,14 +27,13 @@ build:
     - master
 
 test:
-  # image jdk
+  # image: gradle:alpine
   stage: test
   script:
-    - echo "pass"
-    # - ./gradlew test
+    #- ./gradlew test
+    - echo "파이프라인너무오래걸려서테스트생략"
   only:
     - master
-  # 일단 생략
 
 package:
   stage: package
