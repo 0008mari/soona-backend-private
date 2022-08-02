@@ -1,4 +1,7 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     url: jdbc:mariadb://soona-db.cpkgr8va0kzp.ap-northeast-2.rds.amazonaws.com:3306/soonadb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     driver-class-name: org.mariadb.jdbc.Driver

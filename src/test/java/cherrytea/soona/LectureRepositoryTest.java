@@ -33,7 +33,7 @@ public class LectureRepositoryTest {
         UUID savedId = lectureRepository.save(lecture);
         
         //then
-        Lecture findLecture = lectureRepository.find(savedId);
+        Lecture findLecture = lectureRepository.findOne(savedId);
         Assertions.assertThat(findLecture.getId()).isEqualTo(lecture.getId());
         Assertions.assertThat(findLecture.getEvaluation()).isEqualTo(lecture.getEvaluation());
 
