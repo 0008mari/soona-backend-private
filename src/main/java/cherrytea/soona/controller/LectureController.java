@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,17 +23,28 @@ public class LectureController {
     @PostMapping("/lecture")
     public UUID addLecture(@RequestBody Lecture lecture){
         System.out.println(lecture);
-        return lectureService.addLecture(lecture);
+        return lectureService.saveLecture(lecture);
     }
-
 
     @GetMapping(value = "/lectures")
     public List<Lecture> getLectures() {
-
-        //HttpHeaders headers = new HttpHeaders();
-        //headers.set("headername", "headervalue");
-
         return lectureService.findLectures();
-        //return new ResponseEntity<>(lectures, headers, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping(value = "/lecture/{id}")
+    public Lecture getOneLecture(@PathVariable("id") UUID id) {
+        Lecture lecture = lectureService.findOne(id);
+        // System.out.println("------\n\n" + lecture);
+        // 검증됨
+        return lecture;
+    }
+
+    @PutMapping(value = "/lecture/{id}")
+    public void updateLecture(@PathVariable("id") UUID id,
+                              @RequestBody Lecture lecture) {
+
+        String content = lecture.getContent();
+        lectureService.updateLecture(id, content);
+        //System.out.println("lecture = \n" + lecture);
     }
 }

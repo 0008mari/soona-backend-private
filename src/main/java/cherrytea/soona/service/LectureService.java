@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class LectureService {
 
     private final LectureRepository lectureRepository;
 
-    public UUID addLecture(Lecture lecture) {
+    @Transactional
+    public UUID saveLecture(Lecture lecture) {
         return lectureRepository.save(lecture);
     }
 
@@ -25,5 +25,11 @@ public class LectureService {
     }
     public Lecture findOne(UUID lectureId) {
         return lectureRepository.findOne(lectureId);
+    }
+
+    @Transactional
+    public void updateLecture(UUID id, String content){
+        Lecture lecture = lectureRepository.findOne(id);
+        lecture.setContent(content);
     }
 }

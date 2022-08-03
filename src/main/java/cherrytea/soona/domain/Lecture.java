@@ -2,6 +2,7 @@ package cherrytea.soona.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.sql.Clob;
@@ -9,17 +10,17 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 public class Lecture {
 
     @Id
-    @GeneratedValue
-    @Column(name = "LEC_ID")
+    @GeneratedValue(generator= "uuid2")
+    @GenericGenerator(name="uuid2", strategy = "uuid2")
+    @Column(name = "LEC_ID", columnDefinition = "BINARY(16)")
     private UUID id;
 
     // FK
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "TCHR_ID")
     private Teacher teacher;
 

@@ -18,6 +18,7 @@ import java.util.UUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
+@Rollback(value = false)
 public class LectureRepositoryTest {
 
     @Autowired LectureService lectureService;
@@ -31,7 +32,7 @@ public class LectureRepositoryTest {
         lecture.setEvaluation("999점");
 
         //when
-        UUID savedId = lectureService.addLecture(lecture);
+        UUID savedId = lectureService.saveLecture(lecture);
 
         //then
         Assertions.assertThat(lecture).isEqualTo(lectureRepository.findOne(savedId));

@@ -17,10 +17,13 @@ public class LectureRepository {
     private final EntityManager em;
 
     public UUID save(Lecture lecture) {
-        em.persist(lecture);
+        if (lecture.getId() == null){
+            em.persist(lecture);
+        } else {
+            em.merge(lecture);
+        }
         return lecture.getId();
     }
-
 //    public UUID save(Lecture lecture) {
 //        em.persist(lecture);
 //        return lecture.getId();
