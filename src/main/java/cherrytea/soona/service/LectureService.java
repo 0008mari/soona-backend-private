@@ -23,13 +23,17 @@ public class LectureService {
     public List<Lecture> findLectures() {
         return lectureRepository.findAll();
     }
-    public Lecture findOne(UUID lectureId) {
-        return lectureRepository.findOne(lectureId);
+    public Lecture findById(UUID lectureId) {
+        return lectureRepository.findById(lectureId);
     }
 
     @Transactional
     public void updateLecture(UUID id, String content){
-        Lecture lecture = lectureRepository.findOne(id);
+        Lecture lecture = lectureRepository.findById(id);
         lecture.setContent(content);
+    }
+
+    public void deleteById(UUID id){
+        lectureRepository.deleteById(id);
     }
 }

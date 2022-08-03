@@ -35,9 +35,23 @@ public class LectureRepositoryTest {
         UUID savedId = lectureService.saveLecture(lecture);
 
         //then
-        Assertions.assertThat(lecture).isEqualTo(lectureRepository.findOne(savedId));
+        Assertions.assertThat(lecture).isEqualTo(lectureRepository.findById(savedId));
      }
 
+    @Test
+    public void deleteLecture() throws Exception {
+        //given
+        Lecture lecture = new Lecture();
+        lecture.setContent("오마에와 모 신데이루 .");
+        lecture.setEvaluation("10점");
+        UUID deleteId = lectureService.saveLecture(lecture);
 
+        em.flush();
+        em.clear();
+
+        lectureRepository.deleteById(deleteId);
+        Assertions.assertThat(lectureRepository.findById(deleteId)).isNull();
+
+    }
 
 }

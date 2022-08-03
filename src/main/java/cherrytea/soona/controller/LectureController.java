@@ -1,14 +1,8 @@
 package cherrytea.soona.controller;
 
 import cherrytea.soona.domain.Lecture;
-import cherrytea.soona.repository.LectureRepository;
 import cherrytea.soona.service.LectureService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,10 +27,9 @@ public class LectureController {
 
     @GetMapping(value = "/lecture/{id}")
     public Lecture getOneLecture(@PathVariable("id") UUID id) {
-        Lecture lecture = lectureService.findOne(id);
         // System.out.println("------\n\n" + lecture);
         // 검증됨
-        return lecture;
+        return lectureService.findById(id);
     }
 
     @PutMapping(value = "/lecture/{id}")
@@ -47,4 +40,10 @@ public class LectureController {
         lectureService.updateLecture(id, content);
         //System.out.println("lecture = \n" + lecture);
     }
+
+    @DeleteMapping("/lecture/{id}")
+    public void deleteLecture(@PathVariable("id") UUID id) {
+        lectureService.deleteById(id);
+    }
+
 }
