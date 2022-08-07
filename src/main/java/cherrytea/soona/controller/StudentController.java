@@ -3,6 +3,7 @@ package cherrytea.soona.controller;
 
 import cherrytea.soona.domain.Student;
 import cherrytea.soona.service.StudentService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping("/student")
+    @ApiOperation(value = "수업 수정", notes = "현재 stuTel 수정만 지원. 나머지는 무시됨")
     public UUID addStudent(@RequestBody Student student) {
         //System.out.println(student);
         return studentService.saveStudent(student);
