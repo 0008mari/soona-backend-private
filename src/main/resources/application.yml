@@ -17,3 +17,5 @@ spring:
     level:
       org.hibernate.SQL: debug
       org.hibernate.type: trace
+  env:
+    neisKey: 96cabd43e65946f1aaf6d7bd9173f493

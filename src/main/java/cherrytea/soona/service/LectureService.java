@@ -23,8 +23,9 @@ public class LectureService {
     public List<Lecture> findLectures() {
         return lectureRepository.findAll();
     }
-    public Lecture findById(UUID lectureId) {
-        return lectureRepository.findById(lectureId);
+
+    public Lecture findById(UUID id) {
+        return lectureRepository.findById(id);
     }
 
     @Transactional

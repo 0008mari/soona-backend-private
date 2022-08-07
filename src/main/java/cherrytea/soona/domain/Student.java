@@ -1,5 +1,7 @@
 package cherrytea.soona.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,15 +11,17 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table
 @Getter @Setter
+@Table(name = "STUDENT")
 public class Student {
 
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID stuId;
+    @Column(name = "STU_ID", columnDefinition = "BINARY(16)")
+    @JsonProperty("id")
+    @ApiModelProperty(hidden = true)
+    private UUID id;
 
     private String stuName;
 
@@ -26,5 +30,9 @@ public class Student {
     private String parTel;
 
     private String stuAddr;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "SCH_ID")
+    private School school;
 
 }

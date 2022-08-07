@@ -2,6 +2,7 @@ package cherrytea.soona.controller;
 
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.service.LectureService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +21,20 @@ public class LectureController {
         return lectureService.saveLecture(lecture);
     }
 
-    @GetMapping(value = "/lectures")
+    @GetMapping("/lectures")
     public List<Lecture> getLectures() {
         return lectureService.findLectures();
     }
 
-    @GetMapping(value = "/lecture/{id}")
+    @GetMapping("/lecture/{id}")
     public Lecture getOneLecture(@PathVariable("id") UUID id) {
         // System.out.println("------\n\n" + lecture);
         // 검증됨
         return lectureService.findById(id);
     }
 
-    @PutMapping(value = "/lecture/{id}")
+    @PutMapping("/lecture/{id}")
+    @ApiOperation(value = "수업 수정", notes = "현재 Content 수정만 지원")
     public void updateLecture(@PathVariable("id") UUID id,
                               @RequestBody Lecture lecture) {
 

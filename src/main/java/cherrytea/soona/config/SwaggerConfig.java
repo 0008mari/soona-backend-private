@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Soona API")
+                .title("Soona API Documentation")
                 .description("수나 서비스 백엔드 api 정보")
                 .version("0.0.1")
                 .build();
