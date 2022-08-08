@@ -18,7 +18,6 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping("/student")
-    @ApiOperation(value = "수업 수정", notes = "현재 stuTel 수정만 지원. 나머지는 무시됨")
     public UUID addStudent(@RequestBody Student student) {
         //System.out.println(student);
         return studentService.saveStudent(student);
@@ -30,6 +29,7 @@ public class StudentController {
     }
 
     @PutMapping("/student/{id}")
+    @ApiOperation(value = "수업 수정", notes = "현재 stuTel 수정만 지원. 나머지는 무시됨")
     public void updateStudent(@PathVariable("id") UUID id,
                               @RequestBody Student student) {
         //String stuAddr = student.getStuAddr();

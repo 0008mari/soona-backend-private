@@ -19,7 +19,7 @@ public class Student {
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "stu_id", columnDefinition = "binary(16)")
     @JsonProperty("id")
-    @ApiModelProperty(hidden = true)
+    //@ApiModelProperty(hidden = true)
     private UUID id;
 
     private String stuName;
@@ -34,4 +34,6 @@ public class Student {
     @JoinColumn(name = "sch_id")
     private School school;
 
+    @Column(name = "act_chk")
+    private Boolean activated;
 }
