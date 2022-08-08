@@ -18,6 +18,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping("/student")
+    @ApiOperation(value = "학생 추가", notes = "swagger에서 테스트 시 입력 칸에서 id를 지워주셔야 정상 작동 됩니다.")
     public UUID addStudent(@RequestBody Student student) {
         //System.out.println(student);
         return studentService.saveStudent(student);
@@ -29,7 +30,7 @@ public class StudentController {
     }
 
     @PutMapping("/student/{id}")
-    @ApiOperation(value = "수업 수정", notes = "현재 stuTel 수정만 지원. 나머지는 무시됨")
+    @ApiOperation(value = "학생 수정", notes = "현재 stuTel 수정만 지원. 나머지는 무시됨")
     public void updateStudent(@PathVariable("id") UUID id,
                               @RequestBody Student student) {
         //String stuAddr = student.getStuAddr();

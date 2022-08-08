@@ -24,7 +24,7 @@ public class Lecture {
     private UUID id;
 
     // FK
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "tchr_id")
     private Teacher teacher;
 

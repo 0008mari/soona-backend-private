@@ -16,6 +16,7 @@ public class LectureController {
     private final LectureService lectureService;
 
     @PostMapping("/lecture")
+    @ApiOperation(value = "수업 추가", notes = "swagger에서 테스트 시 입력 칸에서 id를 지워주셔야 정상 작동 됩니다.")
     public UUID addLecture(@RequestBody Lecture lecture){
         System.out.println(lecture);
         return lectureService.saveLecture(lecture);
