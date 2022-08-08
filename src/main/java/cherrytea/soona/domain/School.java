@@ -14,11 +14,11 @@ import javax.persistence.Id;
 public class School {
 
     @Id
-    @Column(name = "SCH_ID")
-    @JsonProperty("schooId")
+    @Column(name = "sch_id")
+    @JsonProperty("schoolId")
     @ApiModelProperty(example = "7010057")
     private String schoolId;
 
-    @Column(name = "SCH_NAME")
+    @Column(name = "sch_name")
     private String name;
 }

@@ -12,20 +12,20 @@ import java.util.UUID;
 
 @Entity
 @Getter @Setter
-@Table(name = "LECTURE")
+@Table
 public class Lecture {
 
     @Id
     @GeneratedValue(generator= "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "LEC_ID", columnDefinition = "BINARY(16)")
+    @Column(name = "lec_id", columnDefinition = "binary(16)")
     @JsonProperty("id")
     @ApiModelProperty(hidden = true)
     private UUID id;
 
     // FK
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "TCHR_ID")
+    @JoinColumn(name = "tchr_id")
     private Teacher teacher;
 
     // FK
@@ -40,15 +40,15 @@ public class Lecture {
 
     //lecType 수업 타입 - '보충', '정규'
     //추후 enum 으로 수정하면 좋겠다
-    @Column(name = "LEC_TYPE")
+    @Column(name = "lec_type")
     private String type;
 
     //lec_CONT 수업 내용
-    @Column(name = "LEC_CONT", columnDefinition = "TEXT")
+    @Column(name = "lec_cont", columnDefinition = "TEXT")
     private String content;
 
     //lecEval 수업 평가 - ex: "10점"
-    @Column(name = "LEC_EVAL")
+    @Column(name = "lec_eval")
     private String evaluation;
 
     //hw

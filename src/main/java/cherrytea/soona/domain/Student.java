@@ -12,13 +12,12 @@ import java.util.UUID;
 
 @Entity
 @Getter @Setter
-@Table(name = "STUDENT")
 public class Student {
 
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "STU_ID", columnDefinition = "BINARY(16)")
+    @Column(name = "stu_id", columnDefinition = "binary(16)")
     @JsonProperty("id")
     @ApiModelProperty(hidden = true)
     private UUID id;
@@ -32,7 +31,7 @@ public class Student {
     private String stuAddr;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "SCH_ID")
+    @JoinColumn(name = "sch_id")
     private School school;
 
 }

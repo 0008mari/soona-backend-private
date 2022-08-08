@@ -13,10 +13,10 @@ public class Teacher {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "TCHR_ID", columnDefinition = "BINARY(16)")
+    @Column(name = "tchr_id", columnDefinition = "binary(16)")
     private UUID id;
 
-    @Column(name = "TCHR_NAME")
+    @Column(name = "tchr_name")
     private String name;
 
     // lecture 조회용 - 양방향
