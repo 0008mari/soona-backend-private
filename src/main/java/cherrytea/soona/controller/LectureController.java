@@ -28,9 +28,7 @@ public class LectureController {
     }
 
     @GetMapping("/lecture/{id}")
-    public Lecture getOneLecture(@PathVariable("id") UUID id) {
-        // System.out.println("------\n\n" + lecture);
-        // 검증됨
+    public Lecture getLectureById(@PathVariable("id") UUID id) {
         return lectureService.findById(id);
     }
 

@@ -29,6 +29,12 @@ public class StudentController {
         return studentService.findStudents();
     }
 
+    @GetMapping("/student/{id}")
+    public Student getStudentById(@PathVariable("id") UUID id) {
+        return studentService.findById(id);
+    }
+
+
     @PutMapping("/student/{id}")
     @ApiOperation(value = "학생 수정", notes = "현재 stuTel 수정만 지원. 나머지는 무시됨")
     public void updateStudent(@PathVariable("id") UUID id,
