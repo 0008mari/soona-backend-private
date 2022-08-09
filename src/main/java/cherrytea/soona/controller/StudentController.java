@@ -18,7 +18,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping("/student")
-    @ApiOperation(value = "학생 추가", notes = "swagger에서 테스트 시 입력 칸에서 id를 지워주셔야 정상 작동 됩니다.")
+    @ApiOperation(value = "학생 추가", notes = "swagger에서 테스트 시 입력 칸에서 id를 지워주셔야 정상 작동 됩니다. 또한 학교 id만 집어 넣어도 이름이 자동 등록 됩니다.")
     public UUID addStudent(@RequestBody Student student) {
         //System.out.println(student);
         return studentService.saveStudent(student);
