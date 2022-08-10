@@ -19,7 +19,7 @@ import java.util.UUID;
 @SpringBootTest
 @Transactional
 @Rollback(value = false)
-public class LectureRepositoryTest {
+public class LectureRepositoryTests {
 
     @Autowired LectureService lectureService;
     @Autowired LectureRepository lectureRepository;
