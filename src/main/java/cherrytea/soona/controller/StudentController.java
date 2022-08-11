@@ -5,7 +5,7 @@ import cherrytea.soona.domain.Student;
 import cherrytea.soona.service.StudentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
+//import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,12 +36,10 @@ public class StudentController {
 
 
     @PutMapping("/student/{id}")
-    @ApiOperation(value = "학생 수정", notes = "현재 stuTel 수정만 지원. 나머지는 무시됨")
+    @ApiOperation(value = "학생 수정", notes = "필수 항목: activated, stuName, stuTel, parTel / School의 경우 schoolId 기준으로 자동 수정됨 - id만 입력 권장")
     public void updateStudent(@PathVariable("id") UUID id,
-                              @RequestBody Student student) {
-        //String stuAddr = student.getStuAddr();
-        String stuTel = student.getStuTel();
-        studentService.updateStudent(id, stuTel);
+                              @RequestBody StudentForm studentForm) {
+        studentService.updateStudent(id, studentForm);
     }
 
     @DeleteMapping("/student/{id}")
