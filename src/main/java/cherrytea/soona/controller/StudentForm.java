@@ -17,6 +17,15 @@ public class StudentForm {
     private String stuName;
 
     @NotBlank
+    private int stuGender;
+
+    @NotBlank
+    private int stuYear;
+
+    @NotBlank
+    private int pictureCode;
+
+    @NotBlank
     @Pattern(regexp = "\\d{2,3}\\d{3,4}\\d{4}")
     private String stuTel;
 

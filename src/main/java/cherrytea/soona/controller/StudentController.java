@@ -36,7 +36,7 @@ public class StudentController {
 
 
     @PutMapping("/student/{id}")
-    @ApiOperation(value = "학생 수정", notes = "필수 항목: activated, stuName, stuTel, parTel / School의 경우 schoolId 기준으로 자동 수정됨 - id만 입력 권장")
+    @ApiOperation(value = "학생 수정", notes = "필수 항목: activated, stuName, stuGender, stuYear, pictureCode, stuTel, parTel / School의 경우 schoolId 기준으로 자동 수정됨 - id만 입력 권장")
     public void updateStudent(@PathVariable("id") UUID id,
                               @RequestBody StudentForm studentForm) {
         studentService.updateStudent(id, studentForm);

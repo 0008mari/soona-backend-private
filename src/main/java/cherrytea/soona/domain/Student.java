@@ -24,6 +24,17 @@ public class Student {
 
     private String stuName;
 
+    @ApiModelProperty(example = "3")
+    private int stuGender;
+
+    // 학년
+    @ApiModelProperty(example = "3")
+    private int stuYear;
+
+    @Column(name = "stu_pic")
+    @ApiModelProperty(example = "1")
+    private int pictureCode;
+
     private String stuTel;
 
     private String parTel;
