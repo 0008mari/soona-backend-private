@@ -1,5 +1,6 @@
 package cherrytea.soona.service;
 
+import cherrytea.soona.controller.StudentForm;
 import cherrytea.soona.domain.Student;
 import cherrytea.soona.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,24 @@ public class StudentService {
     }
 
     @Transactional
-    public void updateStudent(UUID id, String stuTel) {
+    public void updateStudent(UUID id, StudentForm studentForm) {
         Student student = studentRepository.findById(id);
-        student.setStuTel(stuTel);
+
+        // NotBlank
+        student.setStuName(studentForm.getStuName());
+        student.setActivated(studentForm.getActivated());
+        student.setStuTel(studentForm.getStuTel());
+        student.setParTel(studentForm.getParTel());
+
+        // 널체크
+        if (studentForm.getStuAddr() != null) {
+            student.setStuAddr(studentForm.getStuAddr());
+        }
+        if (studentForm.getSchool() != null) {
+            student.setSchool(studentForm.getSchool());
+        }
+
+        studentRepository.save(student);
     }
 
     public void deleteById(UUID id) {
