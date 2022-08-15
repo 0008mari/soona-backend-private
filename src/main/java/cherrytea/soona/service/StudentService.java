@@ -38,6 +38,9 @@ public class StudentService {
         student.setActivated(studentForm.getActivated());
         student.setStuTel(studentForm.getStuTel());
         student.setParTel(studentForm.getParTel());
+        student.setStuGender(studentForm.getStuGender());
+        student.setStuYear(studentForm.getStuYear());
+        student.setPictureCode(studentForm.getPictureCode());
 
         // 널체크
         if (studentForm.getStuAddr() != null) {

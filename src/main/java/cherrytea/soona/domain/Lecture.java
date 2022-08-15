@@ -35,7 +35,7 @@ public class Lecture {
     private LocalDateTime lecDate;
 
     //lecTime 수업 시간 (분 단위)
-    private int lecTime;
+    private Integer lecTime;
 
     //lecNum 회차 관련 정보.
 

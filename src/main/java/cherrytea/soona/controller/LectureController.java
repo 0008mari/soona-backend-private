@@ -33,13 +33,11 @@ public class LectureController {
     }
 
     @PutMapping("/lecture/{id}")
-    @ApiOperation(value = "수업 수정", notes = "현재 Content 수정만 지원")
+    @ApiOperation(value = "수업 수정", notes = "")
     public void updateLecture(@PathVariable("id") UUID id,
-                              @RequestBody Lecture lecture) {
+                              @RequestBody LectureForm lectureForm) {
 
-        String content = lecture.getContent();
-        lectureService.updateLecture(id, content);
-        //System.out.println("lecture = \n" + lecture);
+        lectureService.updateLecture(id, lectureForm);
     }
 
     @DeleteMapping("/lecture/{id}")

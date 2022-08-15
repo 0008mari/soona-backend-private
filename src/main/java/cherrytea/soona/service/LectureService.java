@@ -1,5 +1,6 @@
 package cherrytea.soona.service;
 
+import cherrytea.soona.controller.LectureForm;
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.repository.LectureRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,38 @@ public class LectureService {
     }
 
     @Transactional
-    public void updateLecture(UUID id, String content){
+    public void updateLecture(UUID id, LectureForm lectureForm){
         Lecture lecture = lectureRepository.findById(id);
-        lecture.setContent(content);
+
+        // 여기 이거보다 더 나은 코드가 있을텐데... 난...
+        //set
+        if (lectureForm.getSubCode() != null) {
+            lecture.setSubCode(lectureForm.getSubCode());
+        }
+        if (lectureForm.getLecDate() != null) {
+            lecture.setLecDate(lectureForm.getLecDate());
+        }
+        if (lectureForm.getLecTime() != null) {
+            lecture.setLecTime(lectureForm.getLecTime());
+        }
+        if (lectureForm.getType() != null) {
+            lecture.setType(lectureForm.getType());
+        }
+        if (lectureForm.getContent() != null) {
+            lecture.setContent(lectureForm.getContent());
+        }
+        if (lectureForm.getEvaluation() != null) {
+            lecture.setEvaluation(lectureForm.getEvaluation());
+        }
+        if (lectureForm.getHomework() != null) {
+            lecture.setHomework(lectureForm.getHomework());
+        }
+        if (lectureForm.getLecMemo() != null) {
+            lecture.setLecMemo(lectureForm.getLecMemo());
+        }
+
+        lectureRepository.save(lecture);
+
     }
 
     public void deleteById(UUID id){
