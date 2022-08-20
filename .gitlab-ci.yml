@@ -27,12 +27,11 @@ build:
     - master
 
 test:
-  # image: gradle:alpine
+  image: gradle:alpine
   stage: test
   script:
     - chmod +x gradlew
     - ./gradlew test
-    #- echo "파이프라인너무오래걸려서테스트생략"
   only:
     - master
 
