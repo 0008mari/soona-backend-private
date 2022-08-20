@@ -30,8 +30,8 @@ test:
   # image: gradle:alpine
   stage: test
   script:
-    #- ./gradlew test
-    - echo "파이프라인너무오래걸려서테스트생략"
+    - ./gradlew test
+    #- echo "파이프라인너무오래걸려서테스트생략"
   only:
     - master
 
