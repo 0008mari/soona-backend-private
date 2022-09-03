@@ -13,6 +13,8 @@ import javax.validation.constraints.Pattern;
 public class StudentForm {
 
     //학생 정보 수정
+    // validation 원칙상 최대한 빨리 ㄱㄱㄱㄱ
+
     @NotBlank
     private String stuName;
 
@@ -23,6 +25,7 @@ public class StudentForm {
     private int stuYear;
 
     @NotBlank
+    @Pattern(regexp = "[1-5].")
     private int pictureCode;
 
     @NotBlank

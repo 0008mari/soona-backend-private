@@ -33,8 +33,6 @@ public class LectureService {
     public void updateLecture(UUID id, LectureForm lectureForm){
         Lecture lecture = lectureRepository.findById(id);
 
-        // 여기 이거보다 더 나은 코드가 있을텐데... 난...
-        //set
         if (lectureForm.getSubCode() != null) {
             lecture.setSubCode(lectureForm.getSubCode());
         }
