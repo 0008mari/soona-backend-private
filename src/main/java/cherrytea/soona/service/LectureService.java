@@ -1,7 +1,9 @@
 package cherrytea.soona.service;
 
 import cherrytea.soona.controller.LectureForm;
+import cherrytea.soona.domain.Event;
 import cherrytea.soona.domain.Lecture;
+import cherrytea.soona.repository.EventRepository;
 import cherrytea.soona.repository.LectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.UUID;
 public class LectureService {
 
     private final LectureRepository lectureRepository;
+    private final EventRepository eventRepository;
 
     @Transactional
     public UUID saveLecture(Lecture lecture) {
@@ -65,4 +68,23 @@ public class LectureService {
     public void deleteById(UUID id){
         lectureRepository.deleteById(id);
     }
+
+    // 비즈니스 로직
+    public void lectureToNewEvent(Lecture lecture) {
+        // save
+        Event event = new Event();
+        event.setType(0);
+        event.setTeacherId(lecture.getTeacher().getId());
+        event.setLectureId(lecture.getId());
+        event.setStartDate(lecture.getLecDate());
+        int lectureDuration = lecture.getLecTime();
+        event.setEndDate(lecture.getLecDate().plusHours(lectureDuration));
+
+        eventRepository.save(event);
+    }
+
+    public void onLectureUpdate(Lecture lecture, Event event) {
+        // 약간 더 고민이 필요
+    }
+
 }

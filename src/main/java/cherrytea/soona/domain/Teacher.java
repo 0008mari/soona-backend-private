@@ -1,5 +1,6 @@
 package cherrytea.soona.domain;
 
+import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Getter
 public class Teacher {
 
     @Id
