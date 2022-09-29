@@ -1,6 +1,6 @@
 package cherrytea.soona.service;
 
-import cherrytea.soona.controller.StudentMemoForm;
+import cherrytea.soona.dto.StudentMemoForm;
 import cherrytea.soona.domain.StudentMemo;
 import cherrytea.soona.repository.StudentMemoRepository;
 import lombok.RequiredArgsConstructor;

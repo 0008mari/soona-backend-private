@@ -1,6 +1,7 @@
 package cherrytea.soona.controller;
 
 import cherrytea.soona.domain.Lecture;
+import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.service.LectureService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

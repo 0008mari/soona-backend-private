@@ -1,12 +1,8 @@
 package cherrytea.soona.controller;
 
-import cherrytea.soona.domain.School;
-import cherrytea.soona.domain.Student;
 import cherrytea.soona.domain.StudentMemo;
-import cherrytea.soona.service.SchoolService;
+import cherrytea.soona.dto.StudentMemoForm;
 import cherrytea.soona.service.StudentMemoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

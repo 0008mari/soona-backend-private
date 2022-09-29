@@ -1,4 +1,4 @@
-package cherrytea.soona.controller;
+package cherrytea.soona.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

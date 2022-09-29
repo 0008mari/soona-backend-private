@@ -1,4 +1,4 @@
-package cherrytea.soona.controller;
+package cherrytea.soona.dto;
 
 import cherrytea.soona.domain.School;
 import lombok.AllArgsConstructor;

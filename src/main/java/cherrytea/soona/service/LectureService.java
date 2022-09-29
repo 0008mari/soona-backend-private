@@ -1,6 +1,6 @@
 package cherrytea.soona.service;
 
-import cherrytea.soona.controller.LectureForm;
+import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.domain.Event;
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.repository.EventRepository;
