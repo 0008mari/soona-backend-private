@@ -32,7 +32,7 @@ public class TeacherController {
         return teacherService.getIdByLogin(loginForm);
     }
 
-    @PutMapping("/Teacher")
+    @PutMapping("/teacher")
     @ApiOperation(value = "회원정보 수정, 닉네임만 변경 가능")
     public void updateTeacher(@RequestBody TeacherForm teacherForm) {
         teacherService.updateTeacher(teacherForm);
