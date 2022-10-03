@@ -45,7 +45,8 @@ public class TeacherRepositoryTests {
         LectureForm lectureForm = new LectureForm();
         lectureForm.setContent("오늘의 알찬 수학수업");
         lectureForm.setEvaluation("999점");
-        lectureForm.setTeacherId(teacherRepository.save(new Teacher()));
+        lectureForm.setTeacherId(savedTId);
+
         UUID savedLectureId = lectureService.saveLecture(lectureForm);
 
         //when
@@ -53,7 +54,7 @@ public class TeacherRepositoryTests {
         System.out.println("foundLecture = " + foundLecture);
 
         //then
-        Assertions.assertThat(foundLecture.get(0)).isEqualTo(savedLectureId);
+        Assertions.assertThat(foundLecture.get(0).getId()).isEqualTo(savedLectureId);
 
 
          }

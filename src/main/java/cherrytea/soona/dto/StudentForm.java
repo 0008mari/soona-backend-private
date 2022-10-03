@@ -7,12 +7,16 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.UUID;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentForm {
 
     //학생 정보 수정할 때 쓰는 dto
+
+    private UUID teacherId;
 
     @NotBlank
     private String stuName;

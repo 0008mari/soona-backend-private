@@ -1,6 +1,7 @@
 package cherrytea.soona.controller;
 
 import cherrytea.soona.domain.Lecture;
+import cherrytea.soona.domain.Student;
 import cherrytea.soona.dto.teacher.LoginForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
 import cherrytea.soona.dto.teacher.TeacherForm;
@@ -43,5 +44,11 @@ public class TeacherController {
         return teacherService.findById(id).getLectures();
     }
 
+
+    @GetMapping("/teacher/{id}/students")
+    @ApiOperation(value = "특정 선생님에게 속한 학생 목록")
+    public List<Student> getStudentsByTeacherId(@PathVariable("id") UUID id) {
+        return teacherService.findById(id).getStudents();
+    }
 
 }

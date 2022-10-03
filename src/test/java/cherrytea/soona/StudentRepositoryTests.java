@@ -37,6 +37,7 @@ public class StudentRepositoryTests {
 
         //when
         StudentForm studentForm = new StudentForm(
+                UUID.fromString("1629daf4-846c-40e2-8684-ccea340e5e17"),
                 "김팔팔",
                 1,
                 1,
