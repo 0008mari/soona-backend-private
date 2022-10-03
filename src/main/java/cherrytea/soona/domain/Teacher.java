@@ -19,7 +19,6 @@ public class Teacher {
     @Column(name = "tchr_id", columnDefinition = "binary(16)")
     private UUID id;
 
-
     @Column(name = "username", length = 50)
     private String username;
 
@@ -34,6 +33,6 @@ public class Teacher {
 
     // lecture 조회용 - 양방향
     // table 에 영향 x
-    @OneToMany(mappedBy = "teacher")
-    private List<Lecture> lectures = new ArrayList<>();
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+    private List<Lecture> lectures = new ArrayList<Lecture>();
 }

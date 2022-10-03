@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class LectureForm {
 
+    // lecture 수정 시의 form
+
     // private Teacher teacher;
     // 선생님은 수정 가능하지 않음
 

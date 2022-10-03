@@ -24,7 +24,7 @@ public class Lecture {
     private UUID id;
 
     // FK
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "tchr_id")
     private Teacher teacher;
 
@@ -60,6 +60,12 @@ public class Lecture {
     @Column(columnDefinition = "TEXT")
     private String lecMemo;
 
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+    /*
+     * 추후 @Setter 제거 시 Teacher 는 남겨두어야 해서 작성
+     */
 
 
 }

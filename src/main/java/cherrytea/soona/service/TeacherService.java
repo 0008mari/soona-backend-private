@@ -44,6 +44,10 @@ public class TeacherService {
         }
     }
 
+    public Teacher findById(UUID uuid) {
+        return teacherRepository.findById(uuid);
+    }
+
     @Transactional
     public void updateTeacher(TeacherForm teacherForm) {
 
