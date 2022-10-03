@@ -1,16 +1,15 @@
 package cherrytea.soona.controller;
 
+import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.dto.teacher.LoginForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
 import cherrytea.soona.dto.teacher.TeacherForm;
 import cherrytea.soona.service.TeacherService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,5 +37,9 @@ public class TeacherController {
         teacherService.updateTeacher(teacherForm);
     }
 
-
+    @GetMapping("/teacher/{id}/lectures")
+    @ApiOperation(value = "특정 선생님에게 속한 강의 목록")
+    public List<Lecture> getLecturesByTeacherId(@PathVariable("id") UUID id) {
+        return teacherService.findById(id).getLectures();
+    }
 }

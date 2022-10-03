@@ -3,7 +3,9 @@ package cherrytea.soona;
 import cherrytea.soona.controller.TeacherController;
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.domain.Teacher;
+import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
+import cherrytea.soona.repository.TeacherRepository;
 import cherrytea.soona.service.LectureService;
 import cherrytea.soona.service.TeacherService;
 import org.assertj.core.api.Assertions;
@@ -29,6 +31,8 @@ public class TeacherRepositoryTests {
 
     @Autowired TeacherService teacherService;
     @Autowired LectureService lectureService;
+    @Autowired
+    TeacherRepository teacherRepository;
 
 
     @Test
@@ -38,10 +42,11 @@ public class TeacherRepositoryTests {
         UUID savedTId = teacherService.registerTeacher(teacher);
         Teacher savedTeacher = teacherService.findById(savedTId);
 
-        Lecture lecture = new Lecture();
-        lecture.setTeacher(savedTeacher);
-        lecture.setLecDate(LocalDateTime.now());
-        UUID savedLectureId = lectureService.saveLecture(lecture);
+        LectureForm lectureForm = new LectureForm();
+        lectureForm.setContent("오늘의 알찬 수학수업");
+        lectureForm.setEvaluation("999점");
+        lectureForm.setTeacherId(teacherRepository.save(new Teacher()));
+        UUID savedLectureId = lectureService.saveLecture(lectureForm);
 
         //when
         List<Lecture> foundLecture = savedTeacher.getLectures();

@@ -35,4 +35,12 @@ public class Teacher {
     // table 에 영향 x
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<Lecture> lectures = new ArrayList<Lecture>();
+
+    public void addLecture(Lecture lecture) {
+        this.lectures.add(lecture);
+        if (lecture.getTeacher() != this) {
+            lecture.setTeacher(this);
+        }
+    }
+
 }

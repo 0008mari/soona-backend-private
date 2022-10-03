@@ -61,11 +61,14 @@ public class Lecture {
     private String lecMemo;
 
     public void setTeacher(Teacher teacher) {
+        if (this.teacher != null) {
+            this.teacher.getLectures().remove(this);
+        }
         this.teacher = teacher;
+        if (!teacher.getLectures().contains(this)) {
+            teacher.addLecture(this);
+        }
     }
-    /*
-     * 추후 @Setter 제거 시 Teacher 는 남겨두어야 해서 작성
-     */
 
 
 }

@@ -1,7 +1,10 @@
 package cherrytea.soona;
 
 import cherrytea.soona.domain.Lecture;
+import cherrytea.soona.domain.Teacher;
+import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.repository.LectureRepository;
+import cherrytea.soona.repository.TeacherRepository;
 import cherrytea.soona.service.LectureService;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -21,16 +24,22 @@ public class LectureRepositoryTests {
 
     @Autowired LectureService lectureService;
     @Autowired LectureRepository lectureRepository;
+    @Autowired
+    TeacherRepository teacherRepository;
     @Autowired EntityManager em;
 
     @Test
     public void addLecture() throws Exception {
         //given
-        Lecture lecture = new Lecture();
-        lecture.setEvaluation("999점");
+        LectureForm lectureForm = new LectureForm();
+        lectureForm.setContent("오늘의 알찬 수학수업");
+        lectureForm.setEvaluation("999점");
+        lectureForm.setTeacherId(teacherRepository.save(new Teacher()));
+        Lecture lecture = lectureService.lectureFormToLecture(lectureForm);
+        em.persist(lecture);
 
         //when
-        UUID savedId = lectureService.saveLecture(lecture);
+        UUID savedId = lecture.getId();
 
         //then
         Assertions.assertThat(lecture).isEqualTo(lectureRepository.findById(savedId));
@@ -39,10 +48,12 @@ public class LectureRepositoryTests {
     @Test
     public void deleteLecture() throws Exception {
         //given
-        Lecture lecture = new Lecture();
-        lecture.setContent("오마에와 모 신데이루 .");
-        lecture.setEvaluation("10점");
-        UUID deleteId = lectureService.saveLecture(lecture);
+        LectureForm lectureForm = new LectureForm();
+        lectureForm.setContent("오늘의 알찬 수학수업");
+        lectureForm.setEvaluation("999점");
+
+        lectureForm.setTeacherId(UUID.fromString("1629daf4-846c-40e2-8684-ccea340e5e17"));
+        UUID deleteId = lectureService.saveLecture(lectureForm);
 
         em.flush();
         em.clear();
