@@ -13,5 +13,7 @@ import java.time.LocalDateTime;
 public class StudentMemoForm {
 
     private String content;
-    private LocalDateTime memoDate;
+
+    // private LocalDateTime memoDate;
+    // 날짜는 service에서 현재 날짜 자동으로 추가해줌
 }

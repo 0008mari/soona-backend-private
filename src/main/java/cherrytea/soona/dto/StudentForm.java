@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 public class StudentForm {
 
-    //학생 정보 수정
+    //학생 정보 수정할 때 쓰는 dto
 
     @NotBlank
     private String stuName;

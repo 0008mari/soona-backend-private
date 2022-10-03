@@ -2,6 +2,7 @@ package cherrytea.soona.controller;
 
 
 import cherrytea.soona.domain.Student;
+import cherrytea.soona.domain.StudentMemo;
 import cherrytea.soona.dto.StudentForm;
 import cherrytea.soona.service.StudentService;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +37,6 @@ public class StudentController {
         return studentService.findById(id);
     }
 
-
     @PutMapping("/student/{id}")
     @ApiOperation(value = "학생 수정", notes = "필수 항목: activated, stuName, stuGender, stuYear, pictureCode, stuTel, parTel / School의 경우 schoolId 기준으로 자동 수정됨 - id만 입력 권장")
     public void updateStudent(@PathVariable("id") UUID id,
@@ -48,4 +48,10 @@ public class StudentController {
     public void deleteStudent(@PathVariable("id") UUID id) {
         studentService.deleteById(id);
     }
+
+    @GetMapping("/student/{id}/memos")
+    public List<StudentMemo> getStudentMemoById(@PathVariable("id") UUID id) {
+        return studentService.findById(id).getMemos();
+    }
+
 }
