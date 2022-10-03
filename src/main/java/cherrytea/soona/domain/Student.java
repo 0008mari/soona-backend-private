@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -44,6 +46,16 @@ public class Student {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "sch_id")
     private School school;
+
+    @OneToMany(mappedBy = "student")
+    private List<StudentMemo> memos = new ArrayList<StudentMemo>();
+
+    public void addMemo(StudentMemo memo) {
+        this.memos.add(memo);
+        if (memo.getStudent() != this) {
+            memo.setStudent(this);
+        }
+    }
 
     @Column(name = "act_chk")
     private Boolean activated;

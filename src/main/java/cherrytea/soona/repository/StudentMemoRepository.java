@@ -34,7 +34,7 @@ public class StudentMemoRepository {
         JPAQueryFactory query = new JPAQueryFactory(em);
         List<StudentMemo> result = query
                 .selectFrom(memo)
-                .where(memo.studentId.eq(studentId),memo.teacherId.eq(teacherId))
+                .where(memo.student.id.eq(studentId), memo.teacherId.eq(teacherId))
                 .fetch();
         return result;
     }

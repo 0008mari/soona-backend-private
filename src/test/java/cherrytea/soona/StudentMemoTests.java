@@ -39,11 +39,16 @@ public class StudentMemoTests {
         UUID id2 = UUID.fromString("3ba7e648-fa0f-4a23-86ab-d5b52c2c4973");
 
         StudentMemo memo = new StudentMemo();
-        memo.setStudentId(id1);
+        Student student = new Student();
+        student.setStuName("김칠칠");
+
+        memo.setStudent(student);
+
         memo.setTeacherId(id2);
         memo.setContent("메모내용 엘렐레");
         memo.setMemoDate(LocalDateTime.now());
 
+        UUID savedStudentId = studentRepository.save(student);
         UUID savedID = studentMemoRepository.save(memo);
 
         QStudentMemo memo2 = QStudentMemo.studentMemo;
@@ -52,7 +57,7 @@ public class StudentMemoTests {
         // when
         List<StudentMemo> result = query
                 .selectFrom(memo2)
-                .where(memo2.studentId.eq(id1),memo2.teacherId.eq(id2))
+                .where(memo2.student.id.eq(savedStudentId),memo2.teacherId.eq(id2))
                 .fetch();
 
         // then
@@ -60,6 +65,7 @@ public class StudentMemoTests {
             System.out.println("memo = " + memo3.getContent());
         }
 
+        System.out.println("result = " + result);
         Assertions.assertThat(result.get(0).getId()).isEqualTo(savedID);
     }
 }

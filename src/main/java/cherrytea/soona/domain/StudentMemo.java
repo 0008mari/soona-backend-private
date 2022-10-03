@@ -21,8 +21,23 @@ public class StudentMemo {
     @JsonProperty("id")
     private UUID id;
 
-    @Column(name="stu_Id")
-    private UUID studentId;
+    @ManyToOne
+    @JoinColumn(name = "stu_Id")
+    private Student student;
+
+    public void setStudent(Student student) {
+        if (this.student != null) {
+            this.student.getMemos().remove(this);
+        }
+        this.student = student;
+        if (!student.getMemos().contains(this)) {
+            // 무한루프 방지를 위해 체크
+            student.addMemo(this);
+        }
+    }
+
+//    @Column(name="stu_Id")
+//    private UUID studentId;
 
     @Column(name="tchr_id")
     private UUID teacherId;
