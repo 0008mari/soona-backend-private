@@ -25,8 +25,7 @@ public class StudentMemoController {
         return studentMemoService.saveStudentMemo(studentId, studentMemoForm);
     }
 
-    // R 메모불러오기
-    // {학생, 선생님 } 조합으로 -> 목록불러오기
+    // R 학생에 딸린 메모불러오기
     @GetMapping("/student/{id}/memos")
     public List<StudentMemo> getStudentMemoById(@PathVariable("id") UUID id) {
         return studentService.findById(id).getMemos();
