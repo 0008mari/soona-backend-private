@@ -16,7 +16,6 @@ import java.util.UUID;
 public class StudentMemoController {
 
     private final StudentMemoService studentMemoService;
-    private final StudentService studentService;
 
     // C 메모생성
     @PostMapping("/student/{id}/memo")
@@ -26,10 +25,8 @@ public class StudentMemoController {
     }
 
     // R 학생에 딸린 메모불러오기
-    @GetMapping("/student/{id}/memos")
-    public List<StudentMemo> getStudentMemoById(@PathVariable("id") UUID id) {
-        return studentService.findById(id).getMemos();
-    }
+    // @GetMapping("/student/{id}/memos")
+
 
     // U 메모수정
     @PutMapping("/studentMemo/{id}")
