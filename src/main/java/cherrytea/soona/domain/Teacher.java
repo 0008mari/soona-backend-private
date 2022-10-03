@@ -36,6 +36,9 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
     private List<Lecture> lectures = new ArrayList<Lecture>();
 
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+    private List<Student> students = new ArrayList<Student>();
+
     public void addLecture(Lecture lecture) {
         this.lectures.add(lecture);
         if (lecture.getTeacher() != this) {
@@ -43,4 +46,10 @@ public class Teacher {
         }
     }
 
+    public void addStudent(Student student) {
+        this.students.add(student);
+        if (student.getTeacher() != this) {
+            student.setTeacher(this);
+        }
+    }
 }

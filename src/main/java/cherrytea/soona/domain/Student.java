@@ -61,4 +61,18 @@ public class Student {
 
     @Column(name = "act_chk")
     private Boolean activated;
+
+    @ManyToOne
+    @JoinColumn(name = "tchr_id")
+    private Teacher teacher;
+
+    public void setTeacher(Teacher teacher) {
+        if (this.teacher != null) {
+            this.teacher.getStudents().remove(this);
+        }
+        this.teacher = teacher;
+        if (!teacher.getStudents().contains(this)) {
+            teacher.addStudent(this);
+        }
+    }
 }

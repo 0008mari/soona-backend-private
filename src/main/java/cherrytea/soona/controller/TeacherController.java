@@ -42,4 +42,6 @@ public class TeacherController {
     public List<Lecture> getLecturesByTeacherId(@PathVariable("id") UUID id) {
         return teacherService.findById(id).getLectures();
     }
+
+
 }
