@@ -55,8 +55,20 @@ public class TeacherRepositoryTests {
 
         //then
         Assertions.assertThat(foundLecture.get(0).getId()).isEqualTo(savedLectureId);
+    }
 
+    @Test
+    public void validTeacherTest() throws Exception {
+        //given
+        RegisterForm teacher = new RegisterForm("username", "password", "김영영");
+        UUID savedTId = teacherService.registerTeacher(teacher);
 
-         }
+        //when
+
+        //then
+        Assertions.assertThat(teacherService.isValidTeacherId(savedTId)).isTrue();
+        Assertions.assertThat(teacherService.isValidTeacherId(UUID.randomUUID())).isFalse();
+
+     }
 
 }

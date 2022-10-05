@@ -55,4 +55,14 @@ public class TeacherService {
         teacher.setNickname(teacherForm.getNickname());
 
     }
+
+    public Boolean isValidTeacherId(UUID id) {
+
+        Teacher foundTeacher = teacherRepository.findById(id);
+        if (foundTeacher == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

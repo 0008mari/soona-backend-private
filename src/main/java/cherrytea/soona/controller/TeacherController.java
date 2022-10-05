@@ -44,11 +44,16 @@ public class TeacherController {
         return teacherService.findById(id).getLectures();
     }
 
-
     @GetMapping("/teacher/{id}/students")
     @ApiOperation(value = "특정 선생님에게 속한 학생 목록")
     public List<Student> getStudentsByTeacherId(@PathVariable("id") UUID id) {
         return teacherService.findById(id).getStudents();
+    }
+
+    @GetMapping("/teacher/valid/{id}")
+    @ApiOperation(value = "선생님 아이디 검증")
+    public Boolean isValidTeacherId(@PathVariable("id") UUID id) {
+        return teacherService.isValidTeacherId(id);
     }
 
 }
