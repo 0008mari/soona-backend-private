@@ -4,9 +4,9 @@ import cherrytea.soona.domain.School;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.util.UUID;
 
 @Getter
@@ -21,14 +21,14 @@ public class StudentForm {
     @NotBlank
     private String stuName;
 
-    @NotBlank
+    @NotNull
     private int stuGender;
 
-    @NotBlank
+    @NotNull
     private int stuYear;
 
-    @NotBlank
-    @Pattern(regexp = "[1-5].")
+    @NotNull
+    @Range(min = 1, max = 5)
     private int pictureCode;
 
     @NotBlank
@@ -44,7 +44,7 @@ public class StudentForm {
     private School school;
 
     // 학생 상태
-    @NotBlank
+    @NotNull
     private Boolean activated;
 
 }
