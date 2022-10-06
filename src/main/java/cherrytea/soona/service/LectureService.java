@@ -27,9 +27,11 @@ public class LectureService {
 
         Teacher teacher = teacherRepository.findById(lectureForm.getTeacherId());
         Lecture lecture = lectureFormToLecture(lectureForm);
-
         lecture.setTeacher(teacher);
-        return lectureRepository.save(lecture);
+
+        UUID savedId = lectureRepository.save(lecture);
+        lectureToNewEvent(lecture);
+        return savedId;
     }
 
     public List<Lecture> findLectures() {
@@ -44,6 +46,7 @@ public class LectureService {
     public void updateLecture(UUID id, LectureForm lectureForm){
         Lecture lecture = lectureFormToLecture(lectureForm);
         lecture.setId(id);
+        lectureToNewEvent(lecture);
         lectureRepository.save(lecture);
     }
 
@@ -65,9 +68,9 @@ public class LectureService {
         eventRepository.save(event);
     }
 
-    public void onLectureUpdate(Lecture lecture, Event event) {
-        // 약간 더 고민이 필요
-    }
+//    public void onLectureUpdate(Lecture lecture, Event event) {
+//        // 약간 더 고민이 필요
+//    }
 
     public Lecture lectureFormToLecture(LectureForm lectureForm){
 
