@@ -32,7 +32,7 @@ public class TeacherService {
         // username, pw 일치하면
         // id 리턴
         List<Teacher> foundTeacher = teacherRepository.findByUsername(loginForm.getUsername());
-        if (foundTeacher == null) {
+        if (foundTeacher.size() == 0) {
             return null;
         } else {
             if (foundTeacher.get(0).getPassword().equals(loginForm.getPassword())) {
