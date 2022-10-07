@@ -33,4 +33,8 @@ public class Event {
 
     private LocalDateTime endDate;
 
+    private String eventName;
+
+    private UUID studentId;
+
 }
