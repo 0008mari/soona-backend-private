@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -26,6 +27,13 @@ public class StudentRepositoryTests {
     StudentRepository studentRepository;
     @Autowired
     EntityManager em;
+
+    @Test
+    public void getStudents() throws Exception {
+        List<Student> st = studentService.findStudents();
+        System.out.println("st = " + st);
+    }
+
 
     @Test
     public void 학생정보수정() throws Exception {

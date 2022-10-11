@@ -46,6 +46,8 @@ public class TeacherRepositoryTests {
         lectureForm.setContent("오늘의 알찬 수학수업");
         lectureForm.setEvaluation("999점");
         lectureForm.setTeacherId(savedTId);
+        lectureForm.setLecTime(2);
+        lectureForm.setLecDate(LocalDateTime.now());
 
         UUID savedLectureId = lectureService.saveLecture(lectureForm);
 

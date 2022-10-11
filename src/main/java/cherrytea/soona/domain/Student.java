@@ -1,5 +1,6 @@
 package cherrytea.soona.domain;
 
+import cherrytea.soona.dto.StudentResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -46,10 +47,10 @@ public class Student {
     private String stuAddr;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "sch_id")
+    @JoinColumn(name = "sch_id", nullable = false)
     private School school;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
     private List<StudentMemo> memos = new ArrayList<StudentMemo>();
 
     public void addMemo(StudentMemo memo) {
@@ -75,4 +76,5 @@ public class Student {
             teacher.addStudent(this);
         }
     }
+
 }

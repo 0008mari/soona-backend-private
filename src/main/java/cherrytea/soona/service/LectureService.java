@@ -30,7 +30,7 @@ public class LectureService {
         lecture.setTeacher(teacher);
 
         UUID savedId = lectureRepository.save(lecture);
-        lectureToNewEvent(lecture);
+        //lectureToNewEvent(lecture);
         return savedId;
     }
 

@@ -23,7 +23,7 @@ public class Event {
     @Column(name = "event_type")
     private Integer type;
 
-    @Column(name = "teacher_id")
+    @Column(name = "teacher_id", columnDefinition = "binary(16)")
     private UUID teacherId;
 
     @Column(name = "lecture_id")

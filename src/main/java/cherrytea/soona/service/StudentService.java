@@ -3,6 +3,7 @@ package cherrytea.soona.service;
 import cherrytea.soona.domain.Teacher;
 import cherrytea.soona.dto.StudentForm;
 import cherrytea.soona.domain.Student;
+import cherrytea.soona.dto.StudentResponseDto;
 import cherrytea.soona.repository.StudentRepository;
 import cherrytea.soona.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +44,15 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
+    @Transactional
     public List<Student> findStudents() {
         return studentRepository.findAll();
     }
+
+//    @Transactional
+//    public List<Student> findStudentsUsingJoin() {
+//        return studentRepository.findAllUsingJoin();
+//    }
 
     public Student findById(UUID id) {
         return studentRepository.findById(id);

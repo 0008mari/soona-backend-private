@@ -4,20 +4,26 @@ package cherrytea.soona.controller;
 import cherrytea.soona.domain.Student;
 import cherrytea.soona.domain.StudentMemo;
 import cherrytea.soona.dto.StudentForm;
+import cherrytea.soona.dto.StudentResponseDto;
 import cherrytea.soona.service.StudentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.transaction.annotation.Transactional;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class StudentController {
 
+    @Autowired
+    ModelMapper modelMapper;
     private final StudentService studentService;
 
     @PostMapping("/student")
@@ -28,8 +34,12 @@ public class StudentController {
     }
 
     @GetMapping("/students")
-    public List<Student> getStudents() {
-        return studentService.findStudents();
+    public List<StudentResponseDto> getStudents() {
+
+        List<Student> studentList = studentService.findStudents();
+
+        List<StudentResponseDto> resultList = studentList.stream().map(student -> modelMapper.map(student, StudentResponseDto.class)).collect(Collectors.toList());
+        return resultList;
     }
 
     @GetMapping("/student/{id}")

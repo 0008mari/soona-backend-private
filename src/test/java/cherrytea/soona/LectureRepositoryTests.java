@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
@@ -51,8 +52,10 @@ public class LectureRepositoryTests {
         LectureForm lectureForm = new LectureForm();
         lectureForm.setContent("오늘의 알찬 수학수업");
         lectureForm.setEvaluation("999점");
-
         lectureForm.setTeacherId(UUID.fromString("1629daf4-846c-40e2-8684-ccea340e5e17"));
+        lectureForm.setLecTime(2);
+        lectureForm.setLecDate(LocalDateTime.now());
+
         UUID deleteId = lectureService.saveLecture(lectureForm);
 
         em.flush();
