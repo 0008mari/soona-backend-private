@@ -44,7 +44,6 @@ public class StudentMemoTests {
 
         memo.setStudent(student);
 
-        memo.setTeacherId(id2);
         memo.setContent("메모내용 엘렐레");
         memo.setMemoDate(LocalDateTime.now());
 
@@ -57,7 +56,7 @@ public class StudentMemoTests {
         // when
         List<StudentMemo> result = query
                 .selectFrom(memo2)
-                .where(memo2.student.id.eq(savedStudentId),memo2.teacherId.eq(id2))
+                .where(memo2.student.id.eq(savedStudentId))
                 .fetch();
 
         // then
