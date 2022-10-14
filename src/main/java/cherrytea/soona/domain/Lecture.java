@@ -35,7 +35,8 @@ public class Lecture {
     //lecTime 수업 시간 (분 단위)
     private Integer lecTime;
 
-    //lecType 수업 타입 - '보충', '정규'
+    // lecType 수업 타입 - '보충', '정규'
+    // 정규 0 보충 1
     //추후 enum 으로 수정하면 좋겠다
     @Column(name = "lec_type")
     private int type;
@@ -44,7 +45,7 @@ public class Lecture {
     @Column(name = "lec_cont", columnDefinition = "TEXT")
     private String content;
 
-    //lecEval 수업 평가 - (int 1-5 사이)
+    //lecEval 수업 평가 - (int 0-4 사이)
     @Column(name = "lec_eval")
     private int evaluation;
 

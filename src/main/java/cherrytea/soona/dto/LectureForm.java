@@ -21,9 +21,9 @@ public class LectureForm {
     private String subCode;
     private LocalDateTime lecDate;
     private Integer lecTime;
-    private String type;
+    private Integer type;
     private String content;
-    private String evaluation;
+    private Integer evaluation;
     private String homework;
     private String lecMemo;
 
