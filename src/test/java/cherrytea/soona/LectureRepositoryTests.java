@@ -34,7 +34,7 @@ public class LectureRepositoryTests {
         //given
         LectureForm lectureForm = new LectureForm();
         lectureForm.setContent("오늘의 알찬 수학수업");
-        lectureForm.setEvaluation("999점");
+        lectureForm.setEvaluation(4);
         lectureForm.setTeacherId(teacherRepository.save(new Teacher()));
         Lecture lecture = lectureService.lectureFormToLecture(lectureForm);
         em.persist(lecture);
@@ -51,9 +51,9 @@ public class LectureRepositoryTests {
         //given
         LectureForm lectureForm = new LectureForm();
         lectureForm.setContent("오늘의 알찬 수학수업");
-        lectureForm.setEvaluation("999점");
+        lectureForm.setEvaluation(4);
         lectureForm.setTeacherId(UUID.fromString("1629daf4-846c-40e2-8684-ccea340e5e17"));
-        lectureForm.setLecTime(2);
+        lectureForm.setLecTime(60);
         lectureForm.setLecDate(LocalDateTime.now());
 
         UUID deleteId = lectureService.saveLecture(lectureForm);

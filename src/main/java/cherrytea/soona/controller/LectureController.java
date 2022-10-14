@@ -5,14 +5,20 @@ import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.service.LectureService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController // 리턴값에 자동으로 @ResponseBody 붙어서 HTTP json으로 나감.
 @RequiredArgsConstructor
 public class LectureController {
+
+    @Autowired
+    ModelMapper modelMapper;
 
     private final LectureService lectureService;
 
@@ -23,8 +29,12 @@ public class LectureController {
     }
 
     @GetMapping("/lectures")
-    public List<Lecture> getLectures() {
-        return lectureService.findLectures();
+    public List<LectureForm> getLectures() {
+
+        List<Lecture> lectureList = lectureService.findLectures();
+        List<LectureForm> resultList = lectureList.stream().map(
+                        lecture -> modelMapper.map(lecture, LectureForm.class)).collect(Collectors.toList());
+        return resultList;
     }
 
     @GetMapping("/lecture/{id}")
