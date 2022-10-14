@@ -39,9 +39,6 @@ public class StudentMemo {
 //    @Column(name="stu_Id")
 //    private UUID studentId;
 
-    @Column(name="tchr_id")
-    private UUID teacherId;
-
     @Column(name = "memo_cont", columnDefinition = "TEXT")
     private String content;
 

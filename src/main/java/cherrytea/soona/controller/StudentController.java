@@ -4,6 +4,7 @@ package cherrytea.soona.controller;
 import cherrytea.soona.domain.Student;
 import cherrytea.soona.domain.StudentMemo;
 import cherrytea.soona.dto.StudentForm;
+import cherrytea.soona.dto.StudentMemoResponseDto;
 import cherrytea.soona.dto.StudentResponseDto;
 import cherrytea.soona.service.StudentService;
 import io.swagger.annotations.ApiOperation;
@@ -38,8 +39,7 @@ public class StudentController {
 
         List<Student> studentList = studentService.findStudents();
 
-        List<StudentResponseDto> resultList = studentList.stream().map(student -> modelMapper.map(student, StudentResponseDto.class)).collect(Collectors.toList());
-        return resultList;
+        return studentList.stream().map(student -> modelMapper.map(student, StudentResponseDto.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/student/{id}")
@@ -60,8 +60,10 @@ public class StudentController {
     }
 
     @GetMapping("/student/{id}/memos")
-    public List<StudentMemo> getStudentMemoById(@PathVariable("id") UUID id) {
-        return studentService.findById(id).getMemos();
+    public List<StudentMemoResponseDto> getStudentMemoById(@PathVariable("id") UUID id) {
+
+        List<StudentMemo> memoList = studentService.findById(id).getMemos();
+        return memoList.stream().map(studentMemo -> modelMapper.map(studentMemo, StudentMemoResponseDto.class)).collect(Collectors.toList());
     }
 
 }

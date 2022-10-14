@@ -32,9 +32,7 @@ public class LectureController {
     public List<LectureForm> getLectures() {
 
         List<Lecture> lectureList = lectureService.findLectures();
-        List<LectureForm> resultList = lectureList.stream().map(
-                        lecture -> modelMapper.map(lecture, LectureForm.class)).collect(Collectors.toList());
-        return resultList;
+        return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureForm.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/lecture/{id}")

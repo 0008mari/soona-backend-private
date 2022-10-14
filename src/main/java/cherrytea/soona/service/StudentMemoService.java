@@ -1,7 +1,7 @@
 package cherrytea.soona.service;
 
 import cherrytea.soona.domain.Student;
-import cherrytea.soona.dto.StudentMemoForm;
+import cherrytea.soona.dto.StudentMemoRequestDto;
 import cherrytea.soona.domain.StudentMemo;
 import cherrytea.soona.repository.StudentMemoRepository;
 import cherrytea.soona.repository.StudentRepository;
@@ -21,12 +21,12 @@ public class StudentMemoService {
     private final StudentMemoRepository studentMemoRepository;
 
     @Transactional
-    public UUID saveStudentMemo(UUID studentId, StudentMemoForm studentMemoForm) {
+    public UUID saveStudentMemo(UUID studentId, StudentMemoRequestDto studentMemoRequestDto) {
         StudentMemo studentMemo = new StudentMemo();
         Student student = studentRepository.findById(studentId);
         studentMemo.setStudent(student);
         studentMemo.setMemoDate(LocalDateTime.now());
-        studentMemo.setContent(studentMemoForm.getContent());
+        studentMemo.setContent(studentMemoRequestDto.getContent());
         return studentMemoRepository.save(studentMemo);
     }
 
@@ -38,10 +38,10 @@ public class StudentMemoService {
         studentMemoRepository.deleteById(id);
     }
 
-    public void updateStudentMemo(UUID id, StudentMemoForm studentMemoForm) {
+    public void updateStudentMemo(UUID id, StudentMemoRequestDto studentMemoRequestDto) {
         StudentMemo memo = studentMemoRepository.findById(id);
         memo.setMemoDate(LocalDateTime.now());
-        memo.setContent(studentMemoForm.getContent());
+        memo.setContent(studentMemoRequestDto.getContent());
         studentMemoRepository.save(memo);
     }
 }

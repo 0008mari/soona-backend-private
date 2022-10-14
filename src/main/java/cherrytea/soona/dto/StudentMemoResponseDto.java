@@ -3,16 +3,21 @@ package cherrytea.soona.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentMemoForm {
+public class StudentMemoResponseDto {
 
-    private String content;
+    private UUID id;
+
+    private String Content;
+
+    private LocalDateTime memoDate;
 
     // private LocalDateTime memoDate;
     // 날짜는 service에서 현재 날짜 자동으로 추가해줌
