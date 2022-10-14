@@ -2,20 +2,27 @@ package cherrytea.soona.controller;
 
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.domain.Student;
+import cherrytea.soona.dto.StudentResponseDto;
 import cherrytea.soona.dto.teacher.LoginForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
 import cherrytea.soona.dto.teacher.TeacherForm;
 import cherrytea.soona.service.TeacherService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class TeacherController {
+
+    @Autowired
+    ModelMapper modelMapper;
 
     // 로그인 easy.ver
     private final TeacherService teacherService;
@@ -46,8 +53,12 @@ public class TeacherController {
 
     @GetMapping("/teacher/{id}/students")
     @ApiOperation(value = "특정 선생님에게 속한 학생 목록")
-    public List<Student> getStudentsByTeacherId(@PathVariable("id") UUID id) {
-        return teacherService.findById(id).getStudents();
+    public List<StudentResponseDto> getStudentsByTeacherId(@PathVariable("id") UUID id) {
+
+        List<Student> studentList = teacherService.findById(id).getStudents();
+
+        List<StudentResponseDto> resultList = studentList.stream().map(student -> modelMapper.map(student, StudentResponseDto.class)).collect(Collectors.toList());
+        return resultList;
     }
 
     @GetMapping("/teacher/valid/{id}")

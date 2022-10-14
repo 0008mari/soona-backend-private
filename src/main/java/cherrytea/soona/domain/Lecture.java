@@ -19,8 +19,6 @@ public class Lecture {
     @GeneratedValue(generator= "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "lec_id", columnDefinition = "binary(16)")
-    @JsonProperty("id")
-    @ApiModelProperty(hidden = true)
     private UUID id;
 
     // FK
@@ -37,20 +35,18 @@ public class Lecture {
     //lecTime 수업 시간 (분 단위)
     private Integer lecTime;
 
-    //lecNum 회차 관련 정보.
-
     //lecType 수업 타입 - '보충', '정규'
     //추후 enum 으로 수정하면 좋겠다
     @Column(name = "lec_type")
-    private String type;
+    private int type;
 
     //lec_CONT 수업 내용
     @Column(name = "lec_cont", columnDefinition = "TEXT")
     private String content;
 
-    //lecEval 수업 평가 - ex: "10점"
+    //lecEval 수업 평가 - (int 1-5 사이)
     @Column(name = "lec_eval")
-    private String evaluation;
+    private int evaluation;
 
     //hw
     @Column(name = "hw", columnDefinition = "TEXT")
