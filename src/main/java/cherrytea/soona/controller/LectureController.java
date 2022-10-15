@@ -30,21 +30,19 @@ public class LectureController {
 
     @GetMapping("/lectures")
     public List<LectureForm> getLectures() {
-
         List<Lecture> lectureList = lectureService.findLectures();
         return lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureForm.class)).collect(Collectors.toList());
     }
 
     @GetMapping("/lecture/{id}")
-    public Lecture getLectureById(@PathVariable("id") UUID id) {
-        return lectureService.findById(id);
+    public LectureForm getLectureById(@PathVariable("id") UUID id) {
+        return modelMapper.map(lectureService.findById(id), LectureForm.class);
     }
 
     @PutMapping("/lecture/{id}")
     @ApiOperation(value = "수업 수정", notes = "")
     public void updateLecture(@PathVariable("id") UUID id,
                               @RequestBody LectureForm lectureForm) {
-
         lectureService.updateLecture(id, lectureForm);
     }
 

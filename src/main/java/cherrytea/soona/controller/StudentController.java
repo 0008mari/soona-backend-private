@@ -43,8 +43,8 @@ public class StudentController {
     }
 
     @GetMapping("/student/{id}")
-    public Student getStudentById(@PathVariable("id") UUID id) {
-        return studentService.findById(id);
+    public StudentResponseDto getStudentById(@PathVariable("id") UUID id) {
+        return modelMapper.map(studentService.findById(id), StudentResponseDto.class);
     }
 
     @PutMapping("/student/{id}")
