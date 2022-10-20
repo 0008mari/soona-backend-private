@@ -30,7 +30,7 @@ public class LectureService {
         lecture.setTeacher(teacher);
 
         UUID savedId = lectureRepository.save(lecture);
-        //lectureToNewEvent(lecture);
+        lectureToNewEvent(lecture);
         return savedId;
     }
 
@@ -62,6 +62,7 @@ public class LectureService {
         event.setTeacherId(lecture.getTeacher().getId());
         event.setLectureId(lecture.getId());
         event.setStartDate(lecture.getLecDate());
+        event.setEventName("수업");
         int lectureDuration = lecture.getLecTime();
         event.setEndDate(lecture.getLecDate().plusHours(lectureDuration));
 
