@@ -5,6 +5,7 @@ import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.domain.Teacher;
 import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
+import cherrytea.soona.dto.teacher.WithdrawalForm;
 import cherrytea.soona.repository.TeacherRepository;
 import cherrytea.soona.service.LectureService;
 import cherrytea.soona.service.TeacherService;
@@ -73,4 +74,22 @@ public class TeacherRepositoryTests {
 
      }
 
+    @Test
+    public void 회원탈퇴() throws Exception {
+        //given
+        RegisterForm teacher = new RegisterForm("byebye", "1234", "곧탈퇴할사람");
+        UUID savedTId = teacherService.registerTeacher(teacher);
+
+        //when
+            // UUID 존재하지 않는 경우
+        Assertions.assertThat(teacherService.withdrawTeacher(new WithdrawalForm(UUID.randomUUID(), "1234"))).isFalse();
+            // 비밀번호 틀린 경우
+        Assertions.assertThat(teacherService.withdrawTeacher(new WithdrawalForm(savedTId, "."))).isFalse();
+
+            // 탈퇴성공
+        Assertions.assertThat(teacherService.withdrawTeacher(new WithdrawalForm(savedTId, "1234"))).isTrue();
+
+        //then
+        Assertions.assertThat(teacherService.isValidTeacherId(savedTId)).isFalse();
+     }
 }

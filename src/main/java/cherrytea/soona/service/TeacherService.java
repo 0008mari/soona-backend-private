@@ -4,6 +4,7 @@ import cherrytea.soona.domain.Teacher;
 import cherrytea.soona.dto.teacher.LoginForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
 import cherrytea.soona.dto.teacher.TeacherForm;
+import cherrytea.soona.dto.teacher.WithdrawalForm;
 import cherrytea.soona.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class TeacherService {
         teacher.setNickname(registerForm.getNickname());
         teacher.setPassword(registerForm.getPassword());
         teacher.setUsername(registerForm.getUsername());
+        teacher.setActivated(true);
         return teacherRepository.save(teacher);
     }
 
@@ -35,25 +37,35 @@ public class TeacherService {
         if (foundTeacher.size() == 0) {
             return null;
         } else {
-            if (foundTeacher.get(0).getPassword().equals(loginForm.getPassword())) {
-                System.out.println("로그인 성공 ");
-                return foundTeacher.get(0).getId();
-            } else {
+            if (foundTeacher.get(0).getActivated().equals(false)) {
                 return null;
+            } else{
+                if (foundTeacher.get(0).getPassword().equals(loginForm.getPassword())) {
+                    System.out.println("로그인 성공 ");
+                    return foundTeacher.get(0).getId();
+                } else {
+                    return null;
+                }
             }
         }
     }
 
     public Teacher findById(UUID uuid) {
-        return teacherRepository.findById(uuid);
+        Teacher foundTeacher = teacherRepository.findById(uuid);
+        if (foundTeacher.getActivated().equals(true)) {
+            return foundTeacher;
+        } else {
+            return null;
+        }
     }
 
     @Transactional
     public void updateTeacher(TeacherForm teacherForm) {
 
         Teacher teacher = teacherRepository.findById(teacherForm.getId());
-        teacher.setNickname(teacherForm.getNickname());
-
+        if (teacher.getActivated().equals(true)) {
+            teacher.setNickname(teacherForm.getNickname());
+        }
     }
 
     public Boolean isValidTeacherId(UUID id) {
@@ -62,7 +74,26 @@ public class TeacherService {
         if (foundTeacher == null) {
             return false;
         } else {
+            if (foundTeacher.getActivated().equals(false)) {
+                return false;
+            }
             return true;
+        }
+    }
+
+    public Boolean withdrawTeacher(WithdrawalForm withdrawalForm) {
+
+        Teacher foundTeacher = teacherRepository.findById(withdrawalForm.getId());
+        if (foundTeacher == null) {
+            return false;
+        } else {
+            // 비밀번호 검증
+            if (foundTeacher.getPassword().equals(withdrawalForm.getPassword())) {
+                foundTeacher.setActivated(false);
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

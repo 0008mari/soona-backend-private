@@ -6,6 +6,7 @@ import cherrytea.soona.dto.StudentResponseDto;
 import cherrytea.soona.dto.teacher.LoginForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
 import cherrytea.soona.dto.teacher.TeacherForm;
+import cherrytea.soona.dto.teacher.WithdrawalForm;
 import cherrytea.soona.service.TeacherService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -67,4 +68,9 @@ public class TeacherController {
         return teacherService.isValidTeacherId(id);
     }
 
+    @GetMapping("/teacher/withdrawal")
+    @ApiOperation(value = "회원 탈퇴 / uuid, 비밀번호 필요")
+    public Boolean withdrawTeacher(@RequestBody WithdrawalForm withdrawalForm) {
+        return teacherService.withdrawTeacher(withdrawalForm);
+    }
 }
