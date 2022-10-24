@@ -21,4 +21,7 @@ public class School {
 
     @Column(name = "sch_name")
     private String name;
+
+    @Column(name = "sch_locate")
+    private String locate;
 }

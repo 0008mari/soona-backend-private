@@ -34,7 +34,7 @@ public class SearchSchoolTests {
                 .fetch();
 
         for (School school1 : result) {
-            System.out.println("school = " + school1.getName());
+            System.out.println("school = " + school1.getName() + "(" + school1.getLocate() + ")");
         }
 
         Assertions.assertThat(result).isNotNull();
