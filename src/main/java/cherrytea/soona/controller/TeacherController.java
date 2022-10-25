@@ -2,6 +2,7 @@ package cherrytea.soona.controller;
 
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.domain.Student;
+import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.dto.StudentResponseDto;
 import cherrytea.soona.dto.teacher.LoginForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
@@ -48,15 +49,17 @@ public class TeacherController {
 
     @GetMapping("/teacher/{id}/lectures")
     @ApiOperation(value = "특정 선생님에게 속한 강의 목록")
-    public List<Lecture> getLecturesByTeacherId(@PathVariable("id") UUID id) {
-        return teacherService.findById(id).getLectures();
+    public List<LectureForm> getLecturesByTeacherId(@PathVariable("id") UUID id) {
+        List<Lecture> lectureList =  teacherService.findByIdGetLecture(id).getLectures();
+        List<LectureForm> lectureFormList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureForm.class)).collect(Collectors.toList());
+        return lectureFormList;
     }
 
     @GetMapping("/teacher/{id}/students")
     @ApiOperation(value = "특정 선생님에게 속한 학생 목록")
     public List<StudentResponseDto> getStudentsByTeacherId(@PathVariable("id") UUID id) {
 
-        List<Student> studentList = teacherService.findById(id).getStudents();
+        List<Student> studentList = teacherService.findByIdGetStudent(id).getStudents();
 
         List<StudentResponseDto> resultList = studentList.stream().map(student -> modelMapper.map(student, StudentResponseDto.class)).collect(Collectors.toList());
         return resultList;

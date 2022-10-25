@@ -1,5 +1,7 @@
 package cherrytea.soona.service;
 
+import cherrytea.soona.domain.QLecture;
+import cherrytea.soona.domain.QStudent;
 import cherrytea.soona.domain.Teacher;
 import cherrytea.soona.dto.teacher.LoginForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
@@ -51,6 +53,7 @@ public class TeacherService {
     }
 
     public Teacher findById(UUID uuid) {
+
         Teacher foundTeacher = teacherRepository.findById(uuid);
         if (foundTeacher.getActivated().equals(true)) {
             return foundTeacher;
@@ -59,6 +62,23 @@ public class TeacherService {
         }
     }
 
+    public Teacher findByIdGetStudent(UUID uuid) {
+        Teacher foundTeacher = teacherRepository.findByIdByFetchJoinStudent(uuid);
+        if (foundTeacher.getActivated().equals(true)) {
+            return foundTeacher;
+        } else {
+            return null;
+        }
+    }
+
+    public Teacher findByIdGetLecture(UUID uuid) {
+        Teacher foundTeacher = teacherRepository.findByIdByFetchJoinLecture(uuid);
+        if (foundTeacher.getActivated().equals(true)) {
+            return foundTeacher;
+        } else {
+            return null;
+        }
+    }
     @Transactional
     public void updateTeacher(TeacherForm teacherForm) {
 
