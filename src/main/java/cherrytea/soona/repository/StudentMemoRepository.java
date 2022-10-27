@@ -39,10 +39,12 @@ public class StudentMemoRepository {
         return result;
     }
 
+    @Transactional
     public StudentMemo findById(UUID id) {
         return em.find(StudentMemo.class, id);
     }
 
+    @Transactional
     public void deleteById(UUID id) {
         StudentMemo memo = findById(id);
         if (memo == null) {

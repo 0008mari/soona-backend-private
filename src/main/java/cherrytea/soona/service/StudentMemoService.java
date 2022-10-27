@@ -38,6 +38,7 @@ public class StudentMemoService {
         studentMemoRepository.deleteById(id);
     }
 
+    @Transactional
     public void updateStudentMemo(UUID id, StudentMemoRequestDto studentMemoRequestDto) {
         StudentMemo memo = studentMemoRepository.findById(id);
         memo.setMemoDate(LocalDateTime.now());

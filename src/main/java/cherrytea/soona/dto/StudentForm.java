@@ -27,8 +27,8 @@ public class StudentForm {
     @NotNull
     private int stuYear;
 
-    @NotNull
-    @Range(min = 1, max = 5)
+//    @NotNull
+//    @Range(min = 1, max = 5)
     private int pictureCode;
 
     @NotBlank
