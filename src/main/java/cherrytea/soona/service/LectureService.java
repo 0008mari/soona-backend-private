@@ -1,5 +1,6 @@
 package cherrytea.soona.service;
 
+import cherrytea.soona.domain.Student;
 import cherrytea.soona.domain.Teacher;
 import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.domain.Event;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class LectureService {
     private final LectureRepository lectureRepository;
     private final EventRepository eventRepository;
     private final TeacherRepository teacherRepository;
+    private final LectureRollService lectureRollService;
 
     @Transactional
     public UUID saveLecture(LectureForm lectureForm) {
@@ -30,7 +33,7 @@ public class LectureService {
         lecture.setTeacher(teacher);
 
         UUID savedId = lectureRepository.save(lecture);
-        lectureToNewEvent(lecture);
+        // lectureToNewEvent(lecture);
         return savedId;
     }
 
@@ -44,10 +47,12 @@ public class LectureService {
 
     @Transactional
     public void updateLecture(UUID id, LectureForm lectureForm){
+        Teacher teacher = teacherRepository.findById(lectureForm.getTeacherId());
         Lecture lecture = lectureFormToLecture(lectureForm);
         lecture.setId(id);
-        lectureToNewEvent(lecture);
+        lecture.setTeacher(teacher);
         lectureRepository.save(lecture);
+        lectureToNewEvent(lecture);
     }
 
     public void deleteById(UUID id){
@@ -55,6 +60,7 @@ public class LectureService {
     }
 
     // 비즈니스 로직
+    @Transactional
     public void lectureToNewEvent(Lecture lecture) {
         // save
         Event event = new Event();
@@ -62,16 +68,19 @@ public class LectureService {
         event.setTeacherId(lecture.getTeacher().getId());
         event.setLectureId(lecture.getId());
         event.setStartDate(lecture.getLecDate());
-        event.setEventName("수업");
+
+        List<Student> students = lectureRollService.findStudentsByLectureId(lecture.getId());
+
+        StringBuilder sb = new StringBuilder();
+        List<String> nameList = students.stream().map(Student::getStuName).collect(Collectors.toList());
+        sb.append(String.join(", ", nameList)).append(" 수업");
+        event.setEventName(sb.toString());
+
         int lectureDuration = lecture.getLecTime();
         event.setEndDate(lecture.getLecDate().plusHours(lectureDuration));
 
         eventRepository.save(event);
     }
-
-//    public void onLectureUpdate(Lecture lecture, Event event) {
-//        // 약간 더 고민이 필요
-//    }
 
     public Lecture lectureFormToLecture(LectureForm lectureForm){
 
