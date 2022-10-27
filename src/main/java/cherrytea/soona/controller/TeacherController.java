@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,13 +32,13 @@ public class TeacherController {
 
     @PostMapping("/register")
     @ApiOperation(value = "회원가입")
-    public UUID registerTeacher(@RequestBody RegisterForm registerForm) {
+    public UUID registerTeacher(@RequestBody RegisterForm registerForm) throws Exception {
         return teacherService.registerTeacher(registerForm);
     }
 
     @PostMapping("/login")
     @ApiOperation(value = "로그인. 성공 시 UUID 반환 / 실패 시 null 반환")
-    public UUID loginTeacher(@RequestBody LoginForm loginForm) {
+    public UUID loginTeacher(@RequestBody LoginForm loginForm) throws Exception {
         return teacherService.getIdByLogin(loginForm);
     }
 
@@ -71,9 +72,9 @@ public class TeacherController {
         return teacherService.isValidTeacherId(id);
     }
 
-    @GetMapping("/teacher/withdrawal")
+    @PostMapping("/teacher/withdrawal")
     @ApiOperation(value = "회원 탈퇴 / uuid, 비밀번호 필요")
-    public Boolean withdrawTeacher(@RequestBody WithdrawalForm withdrawalForm) {
+    public Boolean withdrawTeacher(@RequestBody WithdrawalForm withdrawalForm) throws Exception {
         return teacherService.withdrawTeacher(withdrawalForm);
     }
 }

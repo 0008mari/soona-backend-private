@@ -73,12 +73,16 @@ public class TeacherRepository {
         QTeacher teacher = QTeacher.teacher;
 
         JPAQueryFactory query = new JPAQueryFactory(em);
-        List<Teacher> result = query
+//        List<Teacher> result = query
+//                .selectFrom(teacher)
+//                .where(teacher.username.eq(username))
+//                .fetch();
+        var q = query
                 .selectFrom(teacher)
-                .where(teacher.username.eq(username))
-                .fetch();
+                .where(teacher.username.eq(username));
+        var qq = q.fetch();
 
-        return result;
+        return qq;
     }
 
 

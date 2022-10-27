@@ -8,10 +8,12 @@ import cherrytea.soona.dto.teacher.RegisterForm;
 import cherrytea.soona.dto.teacher.TeacherForm;
 import cherrytea.soona.dto.teacher.WithdrawalForm;
 import cherrytea.soona.repository.TeacherRepository;
+import cherrytea.soona.secure.SoonaSecure;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,16 +24,18 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
 
     @Transactional
-    public UUID registerTeacher(RegisterForm registerForm) {
+    public UUID registerTeacher(RegisterForm registerForm) throws NoSuchAlgorithmException {
+        SoonaSecure soonaSecure = new SoonaSecure();
+
         Teacher teacher = new Teacher();
         teacher.setNickname(registerForm.getNickname());
-        teacher.setPassword(registerForm.getPassword());
+        teacher.setPassword(SoonaSecure.encrypt(registerForm.getPassword()));
         teacher.setUsername(registerForm.getUsername());
         teacher.setActivated(true);
         return teacherRepository.save(teacher);
     }
 
-    public UUID getIdByLogin(LoginForm loginForm) {
+    public UUID getIdByLogin(LoginForm loginForm) throws NoSuchAlgorithmException {
 
         // username, pw 일치하면
         // id 리턴
@@ -42,7 +46,7 @@ public class TeacherService {
             if (foundTeacher.get(0).getActivated().equals(false)) {
                 return null;
             } else{
-                if (foundTeacher.get(0).getPassword().equals(loginForm.getPassword())) {
+                if (foundTeacher.get(0).getPassword().equals(SoonaSecure.encrypt(loginForm.getPassword()))) {
                     System.out.println("로그인 성공 ");
                     return foundTeacher.get(0).getId();
                 } else {
@@ -101,14 +105,15 @@ public class TeacherService {
         }
     }
 
-    public Boolean withdrawTeacher(WithdrawalForm withdrawalForm) {
+    @Transactional
+    public Boolean withdrawTeacher(WithdrawalForm withdrawalForm) throws NoSuchAlgorithmException {
 
         Teacher foundTeacher = teacherRepository.findById(withdrawalForm.getId());
         if (foundTeacher == null) {
             return false;
         } else {
             // 비밀번호 검증
-            if (foundTeacher.getPassword().equals(withdrawalForm.getPassword())) {
+            if (foundTeacher.getPassword().equals(SoonaSecure.encrypt(withdrawalForm.getPassword()))) {
                 foundTeacher.setActivated(false);
                 return true;
             } else {
@@ -116,4 +121,5 @@ public class TeacherService {
             }
         }
     }
+
 }

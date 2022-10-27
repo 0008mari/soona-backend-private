@@ -22,7 +22,7 @@ public class Teacher {
     @Column(name = "username", length = 50)
     private String username;
 
-    @Column(name = "password", length = 100)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "tchr_name")
