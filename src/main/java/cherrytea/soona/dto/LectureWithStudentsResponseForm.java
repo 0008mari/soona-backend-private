@@ -13,9 +13,10 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LectureWithStudentsForm {
+public class LectureWithStudentsResponseForm {
 
     private UUID teacherId;
+    private UUID lectureId;
 
     private String subCode;
     private LocalDateTime lecDate;
@@ -27,6 +28,7 @@ public class LectureWithStudentsForm {
     private String lecMemo;
 
     private List<UUID> studentList;
+    private List<String> studentNameList;
 
 }
 

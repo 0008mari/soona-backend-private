@@ -1,7 +1,9 @@
 package cherrytea.soona.service;
 
+import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.domain.LectureRoll;
 import cherrytea.soona.domain.Student;
+import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.repository.LectureRollRepository;
 import cherrytea.soona.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class LectureRollService {
         return lectureRollRepository.save(lectureRoll);
     }
 
+
     public List<Student> findStudentsByLectureId(UUID lectureId) {
         // input: 수업id, output: 수업듣는학생들list
         List<LectureRoll> lectureRollList = lectureRollRepository.findLectureRollsByLectureId(lectureId);
@@ -37,6 +40,52 @@ public class LectureRollService {
                 .map(studentRepository::findById)
                 .collect(Collectors.toList());
         return studentList;
+    }
+
+    public List<UUID> findStudentsIdByLectureId(UUID lectureId) {
+        // input: 수업id, output: 수업듣는학생들list
+        List<LectureRoll> lectureRollList = lectureRollRepository.findLectureRollsByLectureId(lectureId);
+        // lectureRoll 속 id에서 실제 student 객체로 변환
+        List<UUID> studentIdList = lectureRollList.stream()
+                .map(LectureRoll::getStudentId)
+                .collect(Collectors.toList());
+        return studentIdList;
+    }
+
+    public List<String> findStudentsNameByLectureId(UUID lectureId) {
+        // input: 수업id, output: 수업듣는학생들list
+        List<LectureRoll> lectureRollList = lectureRollRepository.findLectureRollsByLectureId(lectureId);
+        // lectureRoll 속 id에서 실제 student 객체로 변환
+        List<UUID> studentIdList = lectureRollList.stream()
+                .map(LectureRoll::getStudentId)
+                .collect(Collectors.toList());
+        List<Student> studentList = studentIdList.stream()
+                .map(studentRepository::findById)
+                .collect(Collectors.toList());
+        List<String> studentNameList = studentList.stream()
+                .map(Student::getStuName)
+                .collect(Collectors.toList());
+        return studentNameList;
+    }
+
+    @Transactional
+    public void updateLectureRoll(UUID lectureId){
+        // lectureId 기준으로
+        // 딸려있는 lectureRoll 모두 삭제하고
+        // 새로 생성
+        List<LectureRoll> lectureRollList = lectureRollRepository.findLectureRollsByLectureId(lectureId);
+        for (LectureRoll lectureRoll : lectureRollList){
+            lectureRollRepository.deleteById(lectureRoll.getId());
+        }
+        List<UUID> studentIdList = lectureRollList.stream()
+                .map(LectureRoll::getStudentId)
+                .collect(Collectors.toList());
+        for (UUID studentId : studentIdList) {
+            LectureRoll lectureRoll = new LectureRoll();
+            lectureRoll.setLectureId(lectureId);
+            lectureRoll.setStudentId(studentId);
+            Long savedId2 = saveLectureRoll(lectureRoll);
+        }
     }
 
     // 문자열 생성

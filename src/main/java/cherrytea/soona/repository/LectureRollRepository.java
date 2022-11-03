@@ -29,7 +29,7 @@ public class LectureRollRepository {
         return lectureRoll.getId();
     }
 
-    public LectureRoll findById(UUID id) {
+    public LectureRoll findById(Long id) {
         return em.find(LectureRoll.class, id);
     }
 
@@ -39,7 +39,7 @@ public class LectureRollRepository {
     }
 
     @Transactional
-    public void deleteById(UUID id) {
+    public void deleteById(Long id) {
 
         LectureRoll lectureRoll = findById(id);
         if (lectureRoll == null) {
@@ -76,5 +76,4 @@ public class LectureRollRepository {
                 .where(lectureRoll.lectureId.eq(lectureId))
                 .fetch();
     }
-
 }

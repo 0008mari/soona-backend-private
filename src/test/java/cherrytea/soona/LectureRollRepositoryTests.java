@@ -1,17 +1,10 @@
 package cherrytea.soona;
 
 import cherrytea.soona.controller.LectureController;
-import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.domain.LectureRoll;
-import cherrytea.soona.domain.Student;
-import cherrytea.soona.domain.Teacher;
-import cherrytea.soona.dto.LectureForm;
-import cherrytea.soona.dto.LectureWithStudentsForm;
-import cherrytea.soona.repository.LectureRepository;
 import cherrytea.soona.repository.LectureRollRepository;
 import cherrytea.soona.repository.StudentRepository;
 import cherrytea.soona.service.LectureRollService;
-import cherrytea.soona.service.LectureService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)

@@ -25,4 +25,5 @@ public class LectureRollController {
         LectureRoll lectureRoll = modelMapper.map(lectureRollForm, LectureRoll.class);
         return lectureRollService.saveLectureRoll(lectureRoll);
     }
+
 }

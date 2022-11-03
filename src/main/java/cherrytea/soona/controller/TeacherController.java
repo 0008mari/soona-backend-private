@@ -3,11 +3,13 @@ package cherrytea.soona.controller;
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.domain.Student;
 import cherrytea.soona.dto.LectureForm;
+import cherrytea.soona.dto.LectureWithStudentsResponseForm;
 import cherrytea.soona.dto.StudentResponseDto;
 import cherrytea.soona.dto.teacher.LoginForm;
 import cherrytea.soona.dto.teacher.RegisterForm;
 import cherrytea.soona.dto.teacher.TeacherForm;
 import cherrytea.soona.dto.teacher.WithdrawalForm;
+import cherrytea.soona.service.LectureRollService;
 import cherrytea.soona.service.TeacherService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,6 +31,7 @@ public class TeacherController {
 
     // 로그인 easy.ver
     private final TeacherService teacherService;
+    private final LectureRollService lectureRollService;
 
     @PostMapping("/register")
     @ApiOperation(value = "회원가입")
@@ -53,6 +56,23 @@ public class TeacherController {
     public List<LectureForm> getLecturesByTeacherId(@PathVariable("id") UUID id) {
         List<Lecture> lectureList =  teacherService.findByIdGetLecture(id).getLectures();
         List<LectureForm> lectureFormList = lectureList.stream().map(lecture -> modelMapper.map(lecture, LectureForm.class)).collect(Collectors.toList());
+        return lectureFormList;
+    }
+
+    @GetMapping("/teacher/{id}/lecturesWithStudents")
+    @ApiOperation(value = "특정 선생님에게 속한 강의 목록 - 강의에 학생 리스트 포함.")
+    public List<LectureWithStudentsResponseForm> getLecturesByTeacherIdWithStudents(@PathVariable("id") UUID id) {
+        List<Lecture> lectureList =  teacherService.findByIdGetLecture(id).getLectures();
+        List<LectureWithStudentsResponseForm> lectureFormList = new ArrayList<>();
+        // students 채우기
+        for (Lecture lecture: lectureList){
+            LectureWithStudentsResponseForm form = modelMapper.map(lecture, LectureWithStudentsResponseForm.class);
+            List<UUID> studentIds = lectureRollService.findStudentsIdByLectureId(lecture.getId());
+            List<String> studentNames = lectureRollService.findStudentsNameByLectureId(lecture.getId());
+            form.setStudentList(studentIds);
+            form.setStudentNameList(studentNames);
+            lectureFormList.add(form);
+        }
         return lectureFormList;
     }
 

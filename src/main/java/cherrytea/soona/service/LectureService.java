@@ -47,12 +47,14 @@ public class LectureService {
 
     @Transactional
     public void updateLecture(UUID id, LectureForm lectureForm){
-        Teacher teacher = teacherRepository.findById(lectureForm.getTeacherId());
-        Lecture lecture = lectureFormToLecture(lectureForm);
-        lecture.setId(id);
-        lecture.setTeacher(teacher);
-        lectureRepository.save(lecture);
-        lectureToNewEvent(lecture);
+        if (lectureRepository.findById(id).equals(null)){
+            return;
+        } else{
+            Lecture lecture = lectureRepository.findById(id);
+            lecture = lectureFormToLecture(lecture, lectureForm);
+            lectureRepository.save(lecture);
+            lectureToNewEvent(lecture);
+        }
     }
 
     public void deleteById(UUID id){
@@ -85,6 +87,37 @@ public class LectureService {
     public Lecture lectureFormToLecture(LectureForm lectureForm){
 
         Lecture lecture = new Lecture();
+
+        if (lectureForm.getSubCode() != null) {
+            lecture.setSubCode(lectureForm.getSubCode());
+        }
+        if (lectureForm.getLecDate() != null) {
+            lecture.setLecDate(lectureForm.getLecDate());
+        }
+        if (lectureForm.getLecTime() != null) {
+            lecture.setLecTime(lectureForm.getLecTime());
+        }
+        if (lectureForm.getType() != null) {
+            lecture.setType(lectureForm.getType());
+        }
+        if (lectureForm.getContent() != null) {
+            lecture.setContent(lectureForm.getContent());
+        }
+        if (lectureForm.getEvaluation() != null) {
+            lecture.setEvaluation(lectureForm.getEvaluation());
+        }
+        if (lectureForm.getHomework() != null) {
+            lecture.setHomework(lectureForm.getHomework());
+        }
+        if (lectureForm.getLecMemo() != null) {
+            lecture.setLecMemo(lectureForm.getLecMemo());
+        }
+
+        return lecture;
+    }
+
+    public Lecture lectureFormToLecture(Lecture lecture, LectureForm lectureForm){
+
         if (lectureForm.getSubCode() != null) {
             lecture.setSubCode(lectureForm.getSubCode());
         }

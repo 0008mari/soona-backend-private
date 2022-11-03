@@ -3,7 +3,8 @@ package cherrytea.soona.controller;
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.domain.LectureRoll;
 import cherrytea.soona.dto.LectureForm;
-import cherrytea.soona.dto.LectureWithStudentsForm;
+import cherrytea.soona.dto.LectureWithStudentsRequestForm;
+import cherrytea.soona.dto.LectureWithStudentsResponseForm;
 import cherrytea.soona.service.LectureRollService;
 import cherrytea.soona.service.LectureService;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +35,7 @@ public class LectureController {
 
     @PostMapping("/lectureWithStudents")
     @ApiOperation(value = "수업 추가(학생과 함께하는 ver)", notes = "swagger에서 테스트 시 입력 칸에서 id를 지워주셔야 정상 작동 됩니다. 학생리스트는 [uuid, uuid, ...] 형태로 ")
-    public UUID addLectureWithStudents(@RequestBody LectureWithStudentsForm form){
+    public UUID addLectureWithStudents(@RequestBody LectureWithStudentsRequestForm form){
 
         // lectureForm 분리해서 전달
         UUID savedId = lectureService.saveLecture(modelMapper.map(form, LectureForm.class));
@@ -45,12 +46,9 @@ public class LectureController {
             lectureRoll.setStudentId(studentId);
             Long savedId2 = lectureRollService.saveLectureRoll(lectureRoll);
         }
-
         Lecture savedLecture = lectureService.findById(savedId);
-        
         // lecture 저장 및 lec_roll 저장 먼저 되고 그 다음에 event 호출
         lectureService.lectureToNewEvent(savedLecture);
-
         return savedId;
     }
 
@@ -70,6 +68,18 @@ public class LectureController {
     public void updateLecture(@PathVariable("id") UUID id,
                               @RequestBody LectureForm lectureForm) {
         lectureService.updateLecture(id, lectureForm);
+    }
+
+    @PutMapping("/lectureWithStudent/{id}")
+    @ApiOperation(value = "수업수정 / 학생 UUID 리스트와 함께 - swagger를 믿지 마세요 그녀석 가짜 UUID를 제시함.")
+    public void updateLectureWithStudents(@PathVariable("id") UUID id,
+                                          @RequestBody LectureWithStudentsRequestForm form) {
+        LectureForm lectureForm = modelMapper.map(form, LectureForm.class);
+        lectureService.updateLecture(id, lectureForm);
+        // lectureRoll 수정
+        // lectureId 기준으로 검색해서 나온 lecRoll 전부 삭제
+        lectureRollService.updateLectureRoll(id);
+        lectureService.lectureToNewEvent(lectureService.findById(id));
     }
 
     @DeleteMapping("/lecture/{id}")
