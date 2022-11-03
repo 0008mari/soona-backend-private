@@ -70,7 +70,7 @@ public class LectureController {
         lectureService.updateLecture(id, lectureForm);
     }
 
-    @PutMapping("/lectureWithStudent/{id}")
+    @PutMapping("/lectureWithStudents/{id}")
     @ApiOperation(value = "수업수정 / 학생 UUID 리스트와 함께 - swagger를 믿지 마세요 그녀석 가짜 UUID를 제시함.")
     public void updateLectureWithStudents(@PathVariable("id") UUID id,
                                           @RequestBody LectureWithStudentsRequestForm form) {
