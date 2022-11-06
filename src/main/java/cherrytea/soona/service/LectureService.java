@@ -75,6 +75,7 @@ public class LectureService {
 
         StringBuilder sb = new StringBuilder();
         List<String> nameList = students.stream().map(Student::getStuName).collect(Collectors.toList());
+        sb.append("[" + lecture.getSubCode() + "]");
         sb.append(String.join(", ", nameList)).append(" 수업");
         event.setEventName(sb.toString());
 
