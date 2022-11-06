@@ -65,6 +65,17 @@ public class LectureController {
         return modelMapper.map(lectureService.findById(id), LectureForm.class);
     }
 
+    @GetMapping("/lectureWithStudent/{id}")
+    public LectureWithStudentsResponseForm getLectureWithStudentById(@PathVariable("id") UUID id) {
+        LectureWithStudentsResponseForm form = modelMapper.map(lectureService.findById(id), LectureWithStudentsResponseForm.class);
+        // 학생 설정
+        List<UUID> studentIds = lectureRollService.findStudentsIdByLectureId(form.getLectureId());
+        List<String> studentNames = lectureRollService.findStudentsNameByLectureId(form.getLectureId());
+        form.setStudentList(studentIds);
+        form.setStudentNameList(studentNames);
+        return form;
+    }
+
     @PutMapping("/lecture/{id}")
     @ApiOperation(value = "수업 수정")
     public void updateLecture(@PathVariable("id") UUID id,
