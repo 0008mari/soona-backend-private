@@ -53,7 +53,7 @@ public class LectureService {
             Lecture lecture = lectureRepository.findById(id);
             lecture = lectureFormToLecture(lecture, lectureForm);
             lectureRepository.save(lecture);
-            lectureToNewEvent(lecture);
+            //lectureToNewEvent(lecture);
         }
     }
 

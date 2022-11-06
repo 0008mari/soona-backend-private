@@ -5,6 +5,7 @@ import cherrytea.soona.domain.LectureRoll;
 import cherrytea.soona.dto.LectureForm;
 import cherrytea.soona.dto.LectureWithStudentsRequestForm;
 import cherrytea.soona.dto.LectureWithStudentsResponseForm;
+import cherrytea.soona.service.DayEventService;
 import cherrytea.soona.service.LectureRollService;
 import cherrytea.soona.service.LectureService;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,7 @@ public class LectureController {
 
     private final LectureService lectureService;
     private final LectureRollService lectureRollService;
+    private final DayEventService dayEventService;
 
     @PostMapping("/lecture")
     @ApiOperation(value = "수업 추가", notes = "swagger에서 테스트 시 입력 칸에서 id를 지워주셔야 정상 작동 됩니다.")
@@ -75,10 +77,11 @@ public class LectureController {
     public void updateLectureWithStudents(@PathVariable("id") UUID id,
                                           @RequestBody LectureWithStudentsRequestForm form) {
         LectureForm lectureForm = modelMapper.map(form, LectureForm.class);
+        dayEventService.deleteEventByLecture(id); // dayevent 삭제
         lectureService.updateLecture(id, lectureForm);
         // lectureRoll 수정
         lectureRollService.updateLectureRoll(id, form.getStudentList());
-        lectureService.lectureToNewEvent(lectureService.findById(id));
+        lectureService.lectureToNewEvent(lectureService.findById(id)); // dayevent 다시만들기
     }
 
     @DeleteMapping("/lecture/{id}")

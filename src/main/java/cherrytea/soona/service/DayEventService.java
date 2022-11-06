@@ -24,7 +24,17 @@ public class DayEventService {
         return eventRepository.findByTeacher(teacherId);
     }
 
-    // 오픈 API 콜
-    // 뭐가 있어야 되냐면 콜 하는 거랑 init 하는게 따로 있어야 한다. ...
+    public List<Event> findByLecture(UUID lectureId){
+        return eventRepository.findByLecture(lectureId);
+    }
+
+    public void deleteEventByLecture(UUID lectureId){
+        // lecture 에 딸린 이벤트 조회
+        List<Event> events = findByLecture(lectureId);
+        // 여러개 모두 삭제
+        for (Event event : events) {
+            eventRepository.deleteById(event.getId());
+        }
+    }
 
 }
