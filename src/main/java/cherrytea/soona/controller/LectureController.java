@@ -98,6 +98,7 @@ public class LectureController {
     @DeleteMapping("/lecture/{id}")
     public void deleteLecture(@PathVariable("id") UUID id) {
         lectureService.deleteById(id);
+        dayEventService.deleteEventByLecture(id);
     }
 
 }

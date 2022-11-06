@@ -114,4 +114,11 @@ public class LectureRollService {
         return generatedString;
     }
 
+    @Transactional
+    public void deleteAllByLectureId(UUID lectureId) {
+        List<LectureRoll> list = lectureRollRepository.findLectureRollsByLectureId(lectureId);
+        for (LectureRoll l : list) {
+            lectureRollRepository.deleteById(l.getId());
+        }
+    }
 }
