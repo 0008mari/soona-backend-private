@@ -81,17 +81,20 @@ public class LectureRollService {
             homeworkKeyMap.put(lectureRoll.getStudentId(), lectureRoll.getHomeworkKey());
             lectureRollRepository.deleteById(lectureRoll.getId());
         }
-        // 새로 생성
-//        List<UUID> studentIdList = lectureRollList.stream()
-//                .map(LectureRoll::getStudentId)
-//                .collect(Collectors.toList());
+        // 새로 수정할 newStudentList
         for (UUID studentId : newStudentList) {
             LectureRoll lectureRoll = new LectureRoll();
             lectureRoll.setLectureId(lectureId);
             lectureRoll.setStudentId(studentId);
-            // homework key 복구
-            lectureRoll.setHomeworkKey(homeworkKeyMap.get(studentId));
-            Long savedId2 = editLectureRoll(lectureRoll);
+            // homework key 복구 or 새로생성
+            String key = homeworkKeyMap.get(studentId);
+            if (Objects.isNull(key)) { // 학생 추가의 경우
+                Long savedId2 = saveLectureRoll(lectureRoll);
+            }
+            else { // 학생 수정의 경우
+                lectureRoll.setHomeworkKey(key);
+                Long savedId2 = editLectureRoll(lectureRoll);
+            }
         }
     }
 
