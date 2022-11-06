@@ -77,8 +77,7 @@ public class LectureController {
         LectureForm lectureForm = modelMapper.map(form, LectureForm.class);
         lectureService.updateLecture(id, lectureForm);
         // lectureRoll 수정
-        // lectureId 기준으로 검색해서 나온 lecRoll 전부 삭제
-        lectureRollService.updateLectureRoll(id);
+        lectureRollService.updateLectureRoll(id, form.getStudentList());
         lectureService.lectureToNewEvent(lectureService.findById(id));
     }
 

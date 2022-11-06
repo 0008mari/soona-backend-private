@@ -69,18 +69,18 @@ public class LectureRollService {
     }
 
     @Transactional
-    public void updateLectureRoll(UUID lectureId){
+    public void updateLectureRoll(UUID lectureId, List<UUID> newStudentList){
         // lectureId 기준으로
         // 딸려있는 lectureRoll 모두 삭제하고
-        // 새로 생성
         List<LectureRoll> lectureRollList = lectureRollRepository.findLectureRollsByLectureId(lectureId);
         for (LectureRoll lectureRoll : lectureRollList){
             lectureRollRepository.deleteById(lectureRoll.getId());
         }
-        List<UUID> studentIdList = lectureRollList.stream()
-                .map(LectureRoll::getStudentId)
-                .collect(Collectors.toList());
-        for (UUID studentId : studentIdList) {
+        // 새로 생성
+//        List<UUID> studentIdList = lectureRollList.stream()
+//                .map(LectureRoll::getStudentId)
+//                .collect(Collectors.toList());
+        for (UUID studentId : newStudentList) {
             LectureRoll lectureRoll = new LectureRoll();
             lectureRoll.setLectureId(lectureId);
             lectureRoll.setStudentId(studentId);
