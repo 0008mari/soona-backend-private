@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +26,10 @@ public class LectureRollService {
         return lectureRollRepository.save(lectureRoll);
     }
 
+    @Transactional
+    public Long editLectureRoll(LectureRoll lectureRoll){
+        return lectureRollRepository.save(lectureRoll);
+    }
 
     public List<Student> findStudentsByLectureId(UUID lectureId) {
         // input: 수업id, output: 수업듣는학생들list
@@ -73,7 +75,10 @@ public class LectureRollService {
         // lectureId 기준으로
         // 딸려있는 lectureRoll 모두 삭제하고
         List<LectureRoll> lectureRollList = lectureRollRepository.findLectureRollsByLectureId(lectureId);
+        // (homework key 유지하도록 저장)
+        Map<UUID, String> homeworkKeyMap = new HashMap<>();
         for (LectureRoll lectureRoll : lectureRollList){
+            homeworkKeyMap.put(lectureRoll.getStudentId(), lectureRoll.getHomeworkKey());
             lectureRollRepository.deleteById(lectureRoll.getId());
         }
         // 새로 생성
@@ -84,7 +89,9 @@ public class LectureRollService {
             LectureRoll lectureRoll = new LectureRoll();
             lectureRoll.setLectureId(lectureId);
             lectureRoll.setStudentId(studentId);
-            Long savedId2 = saveLectureRoll(lectureRoll);
+            // homework key 복구
+            lectureRoll.setHomeworkKey(homeworkKeyMap.get(studentId));
+            Long savedId2 = editLectureRoll(lectureRoll);
         }
     }
 
