@@ -97,4 +97,12 @@ public class TeacherController {
     public Boolean withdrawTeacher(@RequestBody WithdrawalForm withdrawalForm) throws Exception {
         return teacherService.withdrawTeacher(withdrawalForm);
     }
+
+    @GetMapping("/isValidUsername/{username}")
+    @ApiOperation(value = "회원 아이디 중복체크")
+    public Boolean isValidUsername(@PathVariable("username") String username) {
+        return teacherService.isValidUsername(username);
+    }
+
+
 }

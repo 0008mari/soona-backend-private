@@ -122,4 +122,12 @@ public class TeacherService {
         }
     }
 
+    public Boolean isValidUsername(String username) {
+        List<Teacher> foundTeacher = teacherRepository.findByUsername(username);
+        if (foundTeacher.size() == 0) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
 }
