@@ -45,6 +45,12 @@ public class TeacherController {
         return teacherService.getIdByLogin(loginForm);
     }
 
+    @GetMapping("/teacher/{id}")
+    @ApiOperation(value = "선생님 별명 정보 확인")
+    public TeacherForm getTeacherById(@PathVariable("id") UUID id) {
+        return modelMapper.map(teacherService.findById(id), TeacherForm.class);
+    }
+
     @PutMapping("/teacher")
     @ApiOperation(value = "회원정보 수정, 닉네임만 변경 가능")
     public void updateTeacher(@RequestBody TeacherForm teacherForm) {

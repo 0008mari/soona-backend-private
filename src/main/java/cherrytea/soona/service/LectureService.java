@@ -23,7 +23,6 @@ public class LectureService {
     @Autowired ModelMapper modelMapper;
     private final LectureRollService lectureRollService;
     private final DayEventService dayEventService;
-    private final LectureService lectureService;
     private final LectureRepository lectureRepository;
     private final EventRepository eventRepository;
     private final TeacherRepository teacherRepository;
@@ -154,16 +153,16 @@ public class LectureService {
     public void updateLectureWithStudents(UUID id, LectureWithStudentsRequestForm form) {
         LectureForm lectureForm = modelMapper.map(form, LectureForm.class);
         dayEventService.deleteEventByLecture(id); // dayevent 삭제
-        lectureService.updateLecture(id, lectureForm);
+        updateLecture(id, lectureForm);
         // lectureRoll 수정
         lectureRollService.updateLectureRoll(id, form.getStudentList());
-        lectureService.lectureToNewEvent(lectureService.findById(id)); // dayevent 다시만들기
+        lectureToNewEvent(findById(id)); // dayevent 다시만들기
     }
 
     @Transactional
     public UUID addLectureWithStudents(LectureWithStudentsRequestForm form) {
         // lectureForm 분리해서 전달
-        UUID savedId = lectureService.saveLecture(modelMapper.map(form, LectureForm.class));
+        UUID savedId = saveLecture(modelMapper.map(form, LectureForm.class));
         // students 에 대해 반복해서 lecture roll 생성
         for (UUID studentId : form.getStudentList()) {
             LectureRoll lectureRoll = new LectureRoll();
@@ -171,9 +170,9 @@ public class LectureService {
             lectureRoll.setStudentId(studentId);
             Long savedId2 = lectureRollService.saveLectureRoll(lectureRoll);
         }
-        Lecture savedLecture = lectureService.findById(savedId);
+        Lecture savedLecture = findById(savedId);
         // lecture 저장 및 lec_roll 저장 먼저 되고 그 다음에 event 호출
-        lectureService.lectureToNewEvent(savedLecture);
+        lectureToNewEvent(savedLecture);
         return savedId;
     }
 }
