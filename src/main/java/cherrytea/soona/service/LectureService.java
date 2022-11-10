@@ -1,14 +1,14 @@
 package cherrytea.soona.service;
 
-import cherrytea.soona.domain.Student;
-import cherrytea.soona.domain.Teacher;
+import cherrytea.soona.domain.*;
 import cherrytea.soona.dto.LectureForm;
-import cherrytea.soona.domain.Event;
-import cherrytea.soona.domain.Lecture;
+import cherrytea.soona.dto.LectureWithStudentsRequestForm;
 import cherrytea.soona.repository.EventRepository;
 import cherrytea.soona.repository.LectureRepository;
 import cherrytea.soona.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +20,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LectureService {
 
+    @Autowired ModelMapper modelMapper;
+    private final LectureRollService lectureRollService;
+    private final DayEventService dayEventService;
+    private final LectureService lectureService;
     private final LectureRepository lectureRepository;
     private final EventRepository eventRepository;
     private final TeacherRepository teacherRepository;
-    private final LectureRollService lectureRollService;
 
     @Transactional
     public UUID saveLecture(LectureForm lectureForm) {
@@ -31,9 +34,7 @@ public class LectureService {
         Teacher teacher = teacherRepository.findById(lectureForm.getTeacherId());
         Lecture lecture = lectureFormToLecture(lectureForm);
         lecture.setTeacher(teacher);
-
         UUID savedId = lectureRepository.save(lecture);
-        // lectureToNewEvent(lecture);
         return savedId;
     }
 
@@ -57,7 +58,9 @@ public class LectureService {
         }
     }
 
+    @Transactional
     public void deleteById(UUID id){
+        dayEventService.deleteEventByLecture(id);
         lectureRepository.deleteById(id);
     }
 
@@ -147,4 +150,30 @@ public class LectureService {
         return lecture;
     }
 
+    @Transactional
+    public void updateLectureWithStudents(UUID id, LectureWithStudentsRequestForm form) {
+        LectureForm lectureForm = modelMapper.map(form, LectureForm.class);
+        dayEventService.deleteEventByLecture(id); // dayevent 삭제
+        lectureService.updateLecture(id, lectureForm);
+        // lectureRoll 수정
+        lectureRollService.updateLectureRoll(id, form.getStudentList());
+        lectureService.lectureToNewEvent(lectureService.findById(id)); // dayevent 다시만들기
+    }
+
+    @Transactional
+    public UUID addLectureWithStudents(LectureWithStudentsRequestForm form) {
+        // lectureForm 분리해서 전달
+        UUID savedId = lectureService.saveLecture(modelMapper.map(form, LectureForm.class));
+        // students 에 대해 반복해서 lecture roll 생성
+        for (UUID studentId : form.getStudentList()) {
+            LectureRoll lectureRoll = new LectureRoll();
+            lectureRoll.setLectureId(savedId);
+            lectureRoll.setStudentId(studentId);
+            Long savedId2 = lectureRollService.saveLectureRoll(lectureRoll);
+        }
+        Lecture savedLecture = lectureService.findById(savedId);
+        // lecture 저장 및 lec_roll 저장 먼저 되고 그 다음에 event 호출
+        lectureService.lectureToNewEvent(savedLecture);
+        return savedId;
+    }
 }

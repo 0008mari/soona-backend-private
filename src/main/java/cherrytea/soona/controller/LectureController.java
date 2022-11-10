@@ -27,7 +27,6 @@ public class LectureController {
 
     private final LectureService lectureService;
     private final LectureRollService lectureRollService;
-    private final DayEventService dayEventService;
 
     @PostMapping("/lecture")
     @ApiOperation(value = "수업 추가", notes = "swagger에서 테스트 시 입력 칸에서 id를 지워주셔야 정상 작동 됩니다.")
@@ -38,20 +37,7 @@ public class LectureController {
     @PostMapping("/lectureWithStudents")
     @ApiOperation(value = "수업 추가(학생과 함께하는 ver)", notes = "swagger에서 테스트 시 입력 칸에서 id를 지워주셔야 정상 작동 됩니다. 학생리스트는 [uuid, uuid, ...] 형태로 ")
     public UUID addLectureWithStudents(@RequestBody LectureWithStudentsRequestForm form){
-
-        // lectureForm 분리해서 전달
-        UUID savedId = lectureService.saveLecture(modelMapper.map(form, LectureForm.class));
-        // students 에 대해 반복해서 lecture roll 생성
-        for (UUID studentId : form.getStudentList()) {
-            LectureRoll lectureRoll = new LectureRoll();
-            lectureRoll.setLectureId(savedId);
-            lectureRoll.setStudentId(studentId);
-            Long savedId2 = lectureRollService.saveLectureRoll(lectureRoll);
-        }
-        Lecture savedLecture = lectureService.findById(savedId);
-        // lecture 저장 및 lec_roll 저장 먼저 되고 그 다음에 event 호출
-        lectureService.lectureToNewEvent(savedLecture);
-        return savedId;
+        return lectureService.addLectureWithStudents(form);
     }
 
     @GetMapping("/lectures")
@@ -87,18 +73,12 @@ public class LectureController {
     @ApiOperation(value = "수업수정 / 학생 UUID 리스트와 함께 - swagger를 믿지 마세요 그녀석 가짜 UUID를 제시함.")
     public void updateLectureWithStudents(@PathVariable("id") UUID id,
                                           @RequestBody LectureWithStudentsRequestForm form) {
-        LectureForm lectureForm = modelMapper.map(form, LectureForm.class);
-        dayEventService.deleteEventByLecture(id); // dayevent 삭제
-        lectureService.updateLecture(id, lectureForm);
-        // lectureRoll 수정
-        lectureRollService.updateLectureRoll(id, form.getStudentList());
-        lectureService.lectureToNewEvent(lectureService.findById(id)); // dayevent 다시만들기
+        lectureService.updateLectureWithStudents(id, form);
     }
 
     @DeleteMapping("/lecture/{id}")
     public void deleteLecture(@PathVariable("id") UUID id) {
         lectureService.deleteById(id);
-        dayEventService.deleteEventByLecture(id);
     }
 
 }
