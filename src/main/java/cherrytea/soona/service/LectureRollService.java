@@ -3,13 +3,16 @@ package cherrytea.soona.service;
 import cherrytea.soona.domain.Lecture;
 import cherrytea.soona.domain.LectureRoll;
 import cherrytea.soona.domain.Student;
-import cherrytea.soona.dto.LectureForm;
+import cherrytea.soona.repository.LectureRepository;
 import cherrytea.soona.repository.LectureRollRepository;
 import cherrytea.soona.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,7 @@ public class LectureRollService {
 
     private final LectureRollRepository lectureRollRepository;
     private final StudentRepository studentRepository;
+    private final LectureRepository lectureRepository;
 
     @Transactional
     public Long saveLectureRoll(LectureRoll lectureRoll) {
@@ -120,5 +124,28 @@ public class LectureRollService {
         for (LectureRoll l : list) {
             lectureRollRepository.deleteById(l.getId());
         }
+    }
+
+    public Integer getStudentLectureTimeById(UUID id) {
+
+        List<Lecture> lectures = lectureRollRepository.findLectureRollsByStudentId(id).stream()
+                .map(LectureRoll::getLectureId)
+                .map(lectureRepository::findById)
+                .collect(Collectors.toList());
+
+        if (lectures.size() == 0) return -1;
+
+        LocalDate now = LocalDate.now();
+        List<Long> leftTime = lectures.stream()
+                .map(Lecture::getLecDate)
+                .map(datetime -> ChronoUnit.DAYS.between(now, datetime.toLocalDate())) // between 은 순서 구분 x
+                .collect(Collectors.toList())
+                .stream().sorted()
+                .collect(Collectors.toList());
+
+        leftTime.removeIf(l -> l < 0);
+
+        if (leftTime.size() == 0) return -1;
+        return leftTime.get(0).intValue();
     }
 }

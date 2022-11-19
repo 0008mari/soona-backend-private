@@ -49,11 +49,6 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-//    @Transactional
-//    public List<Student> findStudentsUsingJoin() {
-//        return studentRepository.findAllUsingJoin();
-//    }
-
     public Student findById(UUID id) {
         return studentRepository.findById(id);
     }
